@@ -1,0 +1,726 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="18dp"
+        >
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            >
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/topAppBar"
+                    style="@style/Widget.MaterialComponents.Toolbar.Primary"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:menu="@menu/top_app_bar"
+                    app:layout_scrollFlags="scroll|enterAlways"
+                    app:title="@string/app_name" />
+
+            </com.google.android.material.appbar.AppBarLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:text="Snacks"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginTop="22dp"
+                    />
+
+                <HorizontalScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="22dp"
+                        android:layout_marginRight="22dp" >
+
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/productLayout"
+                            android:layout_width="376dp"
+                            android:layout_height="412dp"
+                            tools:layout_editor_absoluteX="22dp"
+                            tools:layout_editor_absoluteY="78dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <!-- Media -->
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="194dp"
+                                    android:contentDescription="Pizza Pizza"
+                                    android:scaleType="centerCrop"
+                                    app:srcCompat="@drawable/pizza" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="#F7F7F7"
+                                    android:orientation="vertical"
+                                    android:padding="16dp">
+
+                                    <!-- Title, secondary and supporting text -->
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Cheese Pizza 18 inch"
+                                        android:textAppearance="?attr/textAppearanceHeadline6" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="8dp"
+                                        android:text="$ 12.99"
+                                        android:textAppearance="?attr/textAppearanceBody2"
+                                        android:textColor="?android:attr/textColorSecondary" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="16dp"
+                                        android:text="A simple garnish of fresh herbs, and you've got perfection on a plate."
+                                        android:textAppearance="?attr/textAppearanceBody2"
+                                        android:textColor="?android:attr/textColorSecondary" />
+
+                                </LinearLayout>
+
+                                <!-- Buttons -->
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="#F7F7F7"
+                                    android:orientation="horizontal">
+
+                                    <Button
+                                        android:id="@+id/addButton"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_marginRight="20dp"
+                                        android:layout_marginBottom="20dp"
+                                        android:text="+ Add to Cart" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/doughNuts"
+                            android:layout_width="376dp"
+                            android:layout_height="412dp"
+                            android:layout_marginLeft="22dp"
+                            tools:layout_editor_absoluteX="22dp"
+                            tools:layout_editor_absoluteY="754dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <!-- Media -->
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="194dp"
+                                    android:contentDescription="Chocolate Doughnuts"
+                                    android:scaleType="centerCrop"
+                                    app:srcCompat="@drawable/chocolate_doughnuts" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="#F7F7F7"
+                                    android:orientation="vertical"
+                                    android:padding="16dp">
+
+                                    <!-- Title, secondary and supporting text -->
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Chocolate Doughnut"
+                                        android:textAppearance="?attr/textAppearanceHeadline6" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="8dp"
+                                        android:text="$ 6.99"
+                                        android:textAppearance="?attr/textAppearanceBody2"
+                                        android:textColor="?android:attr/textColorSecondary" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="16dp"
+                                        android:text="Indulge your taste buds with our irresistible doughnut collection, now on sale!"
+                                        android:textAppearance="?attr/textAppearanceBody2"
+                                        android:textColor="?android:attr/textColorSecondary" />
+
+                                </LinearLayout>
+
+                                <!-- Buttons -->
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="#F7F7F7"
+                                    android:orientation="horizontal">
+
+                                    <Button
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_marginRight="20dp"
+                                        android:layout_marginBottom="20dp"
+                                        android:text="+ Add to Cart" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/iceCream"
+                            android:layout_width="376dp"
+                            android:layout_height="412dp"
+                            android:layout_marginLeft="22dp"
+                            tools:layout_editor_absoluteX="22dp"
+                            tools:layout_editor_absoluteY="754dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <!-- Media -->
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="194dp"
+                                    android:contentDescription="Ice Cream"
+                                    android:scaleType="centerCrop"
+                                    app:srcCompat="@drawable/ice_cream" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="#F7F7F7"
+                                    android:orientation="vertical"
+                                    android:padding="16dp">
+
+                                    <!-- Title, secondary and supporting text -->
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Strawberry Ice Cream"
+                                        android:textAppearance="?attr/textAppearanceHeadline6" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="8dp"
+                                        android:text="$ 5.00"
+                                        android:textAppearance="?attr/textAppearanceBody2"
+                                        android:textColor="?android:attr/textColorSecondary" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="16dp"
+                                        android:text="Embark on a journey of exquisite sweetness with our luscious Strawberry Ice Cream."
+                                        android:textAppearance="?attr/textAppearanceBody2"
+                                        android:textColor="?android:attr/textColorSecondary" />
+
+                                </LinearLayout>
+
+                                <!-- Buttons -->
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="#F7F7F7"
+                                    android:orientation="horizontal">
+
+                                    <Button
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_marginRight="20dp"
+                                        android:layout_marginBottom="20dp"
+                                        android:text="+ Add to Cart" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/creamBun"
+                            android:layout_width="376dp"
+                            android:layout_height="412dp"
+                            android:layout_marginLeft="22dp"
+                            tools:layout_editor_absoluteX="22dp"
+                            tools:layout_editor_absoluteY="754dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <!-- Media -->
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="194dp"
+                                    android:contentDescription="Cream Bun"
+                                    android:scaleType="centerCrop"
+                                    app:srcCompat="@drawable/cream_bun" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="#F7F7F7"
+                                    android:orientation="vertical"
+                                    android:padding="16dp">
+
+                                    <!-- Title, secondary and supporting text -->
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Cream Bun"
+                                        android:textAppearance="?attr/textAppearanceHeadline6" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="8dp"
+                                        android:text="$ 3.20"
+                                        android:textAppearance="?attr/textAppearanceBody2"
+                                        android:textColor="?android:attr/textColorSecondary" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="16dp"
+                                        android:text="Indulge your senses in a symphony of sweetness with our delectable Cream Bun."
+                                        android:textAppearance="?attr/textAppearanceBody2"
+                                        android:textColor="?android:attr/textColorSecondary" />
+
+                                </LinearLayout>
+
+                                <!-- Buttons -->
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="#F7F7F7"
+                                    android:orientation="horizontal">
+
+                                    <Button
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_marginRight="20dp"
+                                        android:layout_marginBottom="20dp"
+                                        android:text="+ Add to Cart" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+
+                            android:id="@+id/empty"
+                            android:layout_width="22dp"
+                            android:layout_height="412dp"
+                            android:layout_marginLeft="22dp"
+                            tools:layout_editor_absoluteX="22dp"
+                            tools:layout_editor_absoluteY="754dp">
+                            >
+
+                        </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <TextView
+                    android:id="@+id/vegetable"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:text="Fresh Vegetables"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginTop="42dp"
+                    />
+
+                <HorizontalScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="22dp"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="22dp"
+                        android:layout_marginRight="22dp"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/broccoli"
+                            android:layout_width="376dp"
+                            android:layout_height="412dp"
+                            tools:layout_editor_absoluteX="22dp"
+                            tools:layout_editor_absoluteY="754dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <!-- Media -->
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="194dp"
+                                    android:contentDescription="Broccoli"
+                                    android:scaleType="centerCrop"
+                                    app:srcCompat="@drawable/carrot" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="#F7F7F7"
+                                    android:orientation="vertical"
+                                    android:padding="16dp">
+
+                                    <!-- Title, secondary and supporting text -->
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Broccoli 500g"
+                                        android:textAppearance="?attr/textAppearanceHeadline6" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="8dp"
+                                        android:text="$ 3.99"
+                                        android:textAppearance="?attr/textAppearanceBody2"
+                                        android:textColor="?android:attr/textColorSecondary" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="16dp"
+                                        android:text="Grown to perfection, our broccoli boasts vibrant green florets and tender stems."
+                                        android:textAppearance="?attr/textAppearanceBody2"
+                                        android:textColor="?android:attr/textColorSecondary" />
+
+                                </LinearLayout>
+
+                                <!-- Buttons -->
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="#F7F7F7"
+                                    android:orientation="horizontal">
+
+                                    <Button
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_marginRight="20dp"
+                                        android:layout_marginBottom="20dp"
+                                        android:text="+ Add to Cart" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/carrotCard"
+                            android:layout_width="376dp"
+                            android:layout_height="412dp"
+                            android:layout_marginLeft="22dp"
+                            tools:layout_editor_absoluteX="22dp"
+                            tools:layout_editor_absoluteY="754dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <!-- Media -->
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="194dp"
+                                    android:contentDescription="Fresh Carrot"
+                                    android:scaleType="centerCrop"
+                                    app:srcCompat="@drawable/broccoli" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="#F7F7F7"
+                                    android:orientation="vertical"
+                                    android:padding="16dp">
+
+                                    <!-- Title, secondary and supporting text -->
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Fresh Carrots 1kg"
+                                        android:textAppearance="?attr/textAppearanceHeadline6" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="8dp"
+                                        android:text="$ 5.99"
+                                        android:textAppearance="?attr/textAppearanceBody2"
+                                        android:textColor="?android:attr/textColorSecondary" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="16dp"
+                                        android:text="Fresh from the farm. Rich in rich vitamin A content and promots eye health."
+                                        android:textAppearance="?attr/textAppearanceBody2"
+                                        android:textColor="?android:attr/textColorSecondary" />
+
+                                </LinearLayout>
+
+                                <!-- Buttons -->
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="#F7F7F7"
+                                    android:orientation="horizontal">
+
+                                    <Button
+                                        android:id="@+id/carrotAddToCart"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_marginRight="20dp"
+                                        android:layout_marginBottom="20dp"
+                                        android:text="+ Add to Cart" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/onion"
+                            android:layout_width="376dp"
+                            android:layout_height="412dp"
+                            android:layout_marginLeft="22dp"
+                            tools:layout_editor_absoluteX="22dp"
+                            tools:layout_editor_absoluteY="754dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <!-- Media -->
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="194dp"
+                                    android:contentDescription="Fresh Onion"
+                                    android:scaleType="centerCrop"
+                                    app:srcCompat="@drawable/onion" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="#F7F7F7"
+                                    android:orientation="vertical"
+                                    android:padding="16dp">
+
+                                    <!-- Title, secondary and supporting text -->
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Fresh Onion 1kg"
+                                        android:textAppearance="?attr/textAppearanceHeadline6" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="8dp"
+                                        android:text="$ 2.56"
+                                        android:textAppearance="?attr/textAppearanceBody2"
+                                        android:textColor="?android:attr/textColorSecondary" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="16dp"
+                                        android:text="Elevate your culinary creations with the aromatic and flavorful touch of our Fresh Onions."
+                                        android:textAppearance="?attr/textAppearanceBody2"
+                                        android:textColor="?android:attr/textColorSecondary" />
+
+                                </LinearLayout>
+
+                                <!-- Buttons -->
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="#F7F7F7"
+                                    android:orientation="horizontal">
+
+                                    <Button
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_marginRight="20dp"
+                                        android:layout_marginBottom="20dp"
+                                        android:text="+ Add to Cart" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/tomato"
+                            android:layout_width="376dp"
+                            android:layout_height="412dp"
+                            android:layout_marginLeft="22dp"
+                            tools:layout_editor_absoluteX="22dp"
+                            tools:layout_editor_absoluteY="754dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <!-- Media -->
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="194dp"
+                                    android:contentDescription="Fresh Tomato"
+                                    android:scaleType="centerCrop"
+                                    app:srcCompat="@drawable/tomato" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="#F7F7F7"
+                                    android:orientation="vertical"
+                                    android:padding="16dp">
+
+                                    <!-- Title, secondary and supporting text -->
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Fresh Tomato 1kg"
+                                        android:textAppearance="?attr/textAppearanceHeadline6" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="8dp"
+                                        android:text="$ 1.99"
+                                        android:textAppearance="?attr/textAppearanceBody2"
+                                        android:textColor="?android:attr/textColorSecondary" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="16dp"
+                                        android:text="Savor the taste of summer with our luscious Fresh Tomatoes. Limited time sale!"
+                                        android:textAppearance="?attr/textAppearanceBody2"
+                                        android:textColor="?android:attr/textColorSecondary" />
+
+                                </LinearLayout>
+
+                                <!-- Buttons -->
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="#F7F7F7"
+                                    android:orientation="horizontal">
+
+                                    <Button
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_marginRight="20dp"
+                                        android:layout_marginBottom="20dp"
+                                        android:text="+ Add to Cart" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+
+                            android:id="@+id/empty1"
+                            android:layout_width="22dp"
+                            android:layout_height="412dp"
+                            android:layout_marginLeft="22dp"
+                            tools:layout_editor_absoluteX="22dp"
+                            tools:layout_editor_absoluteY="754dp">
+                            >
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+            </LinearLayout>
+        </ScrollView>
+
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
