@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">ShopCart</string>
+    <string name="favoriteicon">favoriteIcon</string>
+    <string name="user.email.empty.error.msg">Email cannot be empty!</string>
+    <string name="user.password.empty.error.msg">Password cannot be empty!</string>
+    <string name="user.retyped.password.empty.error.msg">Please retype password!</string>
+    <string name="user.password.not.same.msg">Passwords do not match!</string>
+    <string name="user.register.success">User registered successfully!</string>
+    <string name="user.register.failure">Error in registration!</string>
+    <string name="user.signin.success">User signIn successful!</string>
+    <string name="user.signin.failure">Invalid user credentials!</string>
+    <string name="user.signin.process">Trying to signin!</string>
+    <string name="user.email.invalid">Invalid email address!</string>
+</resources>
