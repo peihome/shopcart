@@ -44,18 +44,64 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:clickable="true"
+                android:focusable="true"
+                >
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/vPager"
                     android:layout_width="match_parent"
-                    android:layout_height="360dp"
-                    />
+                    android:layout_height="260dp"
+                    >
+
+                </androidx.viewpager2.widget.ViewPager2>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:textSize="25dp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="15dp"
+                    android:text="Shop Fresh Fruits" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/productRecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="320dp"
+                    android:layout_height="360dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:textSize="25dp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="15dp"
+                    android:text="Fresh from the farm veggies" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/vegetableRV"
+                    android:layout_width="match_parent"
+                    android:layout_height="360dp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:textSize="25dp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="15dp"
+                    android:text="Refreshing beverages" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/juiceRV"
+                    android:layout_width="match_parent"
+                    android:layout_height="360dp"
                     />
 
             </LinearLayout>
