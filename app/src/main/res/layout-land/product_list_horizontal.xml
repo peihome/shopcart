@@ -33,7 +33,7 @@
                     android:layout_height="match_parent"
                     app:menu="@menu/top_app_bar"
                     app:layout_scrollFlags="scroll|enterAlways"
-                    app:title="@string/app_name" />
+                    />
 
             </com.google.android.material.appbar.AppBarLayout>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>

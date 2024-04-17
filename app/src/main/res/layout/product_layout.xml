@@ -48,9 +48,62 @@
                     android:padding="0dp"
                     android:text="+ Add" />
 
+                <LinearLayout
+                    android:id="@+id/quantityLayout"
+                    android:visibility="invisible"
+                    android:layout_width="wrap_content"
+                    android:minWidth="100dp"
+                    android:layout_height="35dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="10dp"
+                    android:padding="0dp"
+                    android:layout_marginTop="25dp"
+                    android:orientation="horizontal"
+                    android:background="@drawable/border_rounded_corners_black"
+
+                    >
+                    <TextView
+                        android:id="@+id/reduceQuantity"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:text="-"
+                        android:textAlignment="center"
+                        android:gravity="center"
+                        android:textSize="18dp"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        >
+                    </TextView>
+                    <TextView
+                        android:id="@+id/quantity"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:text="1"
+                        android:textAlignment="center"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        >
+                    </TextView>
+                    <TextView
+                        android:id="@+id/increaseQuantity"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:text="+"
+                        android:textAlignment="center"
+                        android:gravity="center"
+                        android:textSize="18dp"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        >
+                    </TextView>
+
+                </LinearLayout>
+
             </RelativeLayout>
 
             <LinearLayout
+                android:id="@+id/itemDetailLayout"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:background="#F7F7F7"

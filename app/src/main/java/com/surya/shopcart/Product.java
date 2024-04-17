@@ -5,12 +5,36 @@ public class Product {
     String title;
     String description;
     double price;
+    String id;
+    String path;
 
-    public Product(String image, String title, String description, double price) {
+    public byte getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(byte quantity) {
+        this.quantity = quantity;
+    }
+
+    byte quantity;
+
+    public Product(String id, String image, String title, String description, double price, String path) {
+        this.id = id;
         this.image = image;
         this.title = title;
         this.description = description;
         this.price = price;
+        this.path = path;
+    }
+
+    public Product(String id, String image, String title, String description, double price, String path, byte quantity) {
+        this.id = id;
+        this.image = image;
+        this.title = title;
+        this.description = description;
+        this.price = price;
+        this.path = path;
+        this.quantity = quantity;
     }
 
     public double getPrice() {
@@ -43,5 +67,13 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getPath() {
+        return path;
     }
 }

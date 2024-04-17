@@ -1,32 +1,36 @@
 package com.surya.shopcart;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.widget.ImageView;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.surya.shopcart.activity.CartActivity;
 import com.surya.shopcart.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -43,15 +47,29 @@ public class ProductHomePageActivity extends AppCompatActivity implements Produc
     private static int currentPage = 0;
     private static Timer scrollTimer;
     private static TimerTask scrollTimerTask;
+    private static String userId;
+
+    public void openCartPage(MenuItem item) {
+        Utils.handleMenuCLick(this, item);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_list_horizontal);
 
+        // Home navigation icon
+        Utils.addHomeIconNavigation(this, findViewById(R.id.topAppBar));
+
         handleFLyers();
         handleProducts();
 
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if (currentUser != null) {
+            userId = currentUser.getUid();
+        }
     }
 
     private void handleProducts(){
@@ -69,10 +87,10 @@ public class ProductHomePageActivity extends AppCompatActivity implements Produc
                     productList = new ArrayList<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Map data = document.getData();
-                        productList.add(new Product(data.get("image")+"",
+                        productList.add(new Product( document.getId(), data.get("image")+"",
                                 data.get("title")+"",
                                 data.get("description")+"",
-                                Double.valueOf(data.get("price")+"")));
+                                Double.valueOf(data.get("price")+""), path));
                     }
 
                     recyclerView = findViewById(viewId);
@@ -100,7 +118,7 @@ public class ProductHomePageActivity extends AppCompatActivity implements Produc
                     //ViewPager2 Flyer
                     vPager = findViewById(R.id.vPager);
                     adapter = new FlyerAdapter(flyersList);
-                    vPager.setAdapter(new FlyerAdapter(flyersList));
+                    vPager.setAdapter(adapter);
 
                     autoSlideFlyers(adapter, vPager, handler);
 
@@ -156,17 +174,76 @@ public class ProductHomePageActivity extends AppCompatActivity implements Produc
     }
 
     @Override
-    public void onItemClick(int position, ArrayList<Product> productList) {
+    public void onItemClick(View view, int position, ArrayList<Product> productList, String type) {
         Product product = productList.get(position);
 
-        Intent productDetail = new Intent(this, ProductDetailActivity.class);
+        TextView quantity;
+        LinearLayout itemDetailLayout = null;
+        RelativeLayout itemDetailLayoutParent;
+        short quantityShort = 0;
 
-        productDetail.putExtra("title", product.getTitle());
-        productDetail.putExtra("description", product.getDescription());
-        productDetail.putExtra("price", product.getPrice());
-        productDetail.putExtra("image", product.getImage());
+        switch(type) {
 
-        startActivity(productDetail);
+            case "image":
+                Intent productDetail = new Intent(this, ProductDetailActivity.class);
+                productDetail.putExtra("title", product.getTitle());
+                productDetail.putExtra("description", product.getDescription());
+                productDetail.putExtra("price", product.getPrice());
+                productDetail.putExtra("image", product.getImage());
+                startActivity(productDetail);
+                break;
 
+            case "addButton":
+                itemDetailLayoutParent = (RelativeLayout) view.getParent();
+                itemDetailLayout = (LinearLayout) itemDetailLayoutParent.getChildAt(2);
+                itemDetailLayout.setVisibility(View.VISIBLE);
+                view.setVisibility(View.GONE);
+
+                TextView quantityView =  (TextView) itemDetailLayout.getChildAt(1);
+                handleQuantityLayout((short) 1, itemDetailLayout, quantityView, product);
+
+                break;
+            case "reduceQuantity":
+                itemDetailLayout = (LinearLayout) view.getParent();
+                quantity = (TextView) itemDetailLayout.getChildAt(1);
+                quantityShort = Short.valueOf(quantity.getText()+"");
+                handleQuantityLayout(--quantityShort, itemDetailLayout, quantity, product);
+
+                break;
+            case "increaseQuantity":
+                itemDetailLayout = (LinearLayout) view.getParent();
+                quantity = (TextView) itemDetailLayout.getChildAt(1);
+                quantityShort = Short.valueOf(quantity.getText()+"");
+                handleQuantityLayout(++quantityShort, itemDetailLayout, quantity, product);
+
+                break;
+        }
+    }
+
+    public void handleQuantityLayout(short quantityShort, LinearLayout itemDetailLayout, TextView quantityView, Product product){
+        Button addButton = (Button) ((RelativeLayout) itemDetailLayout.getParent()).getChildAt(1);
+        if(quantityShort <= 0){
+            itemDetailLayout.setVisibility(View.GONE);
+            addButton.setVisibility(View.VISIBLE);
+
+            quantityView.setText("1");
+            Utils.setProductQuantityForUser(userId, quantityView.getTag()+"", quantityShort);
+        }else {
+
+            if(quantityShort >= 20){
+                quantityView.setText("20");
+                Utils.setProductQuantityForUser(userId, quantityView.getTag()+"", quantityShort);
+                Toast.makeText(getApplicationContext(), "Reached maximum limit!", Toast.LENGTH_LONG).show();
+            }
+            else if(quantityShort < 20) {
+                quantityView.setText(quantityShort+"");
+                Utils.setProductQuantityForUser(userId, quantityView.getTag()+"", quantityShort);
+            }
+            else {
+                itemDetailLayout.setVisibility(View.VISIBLE);
+                addButton.setVisibility(View.GONE);
+            }
+
+        }
     }
 }

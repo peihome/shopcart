@@ -2,15 +2,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/favorite"
-        android:icon="@drawable/ic_favorite_24dp"
-        app:showAsAction="ifRoom"
-        android:title="@string/favoriteicon" />
-
-    <item
         android:id="@+id/cartIcon"
         android:icon="@drawable/ic_cart"
-        app:showAsAction="ifRoom"
-        android:title="cartIcon" />
+        app:showAsAction="always"
+        android:orderInCategory="0"
+        android:onClick="openCartPage" />
 
 </menu>

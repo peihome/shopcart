@@ -16,6 +16,9 @@
         android:theme="@style/Theme.ShopCart"
         tools:targetApi="31">
         <activity
+            android:name=".activity.CartActivity"
+            android:exported="false" />
+        <activity
             android:name=".ProductHomePageActivity"
             android:exported="false" />
         <activity
@@ -27,7 +30,6 @@
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
-
         <activity
             android:name=".ProductDetailActivity"
             android:exported="false" />

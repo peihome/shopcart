@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Button;
 
 import com.google.firebase.FirebaseApp;
+import com.surya.shopcart.activity.CartActivity;
 import com.surya.shopcart.utils.Utils;
 
 public class MainActivity extends AppCompatActivity {
