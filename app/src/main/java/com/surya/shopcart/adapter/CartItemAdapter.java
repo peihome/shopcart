@@ -15,13 +15,17 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 import com.surya.shopcart.Product;
+import com.surya.shopcart.ProductAdapter;
 import com.surya.shopcart.R;
+import com.surya.shopcart.utils.Utils;
 
 import java.util.ArrayList;
 
+import okhttp3.internal.Util;
+
 public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHolder> {
 
-    private CartItemAdapter.OnItemClickListener listener;
+    private OnItemClickListener listener;
 
     private ArrayList<Product> cartItemsList;
 
@@ -55,8 +59,9 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
         });
 
         holder.title.setText(product.getTitle());
-        holder.price.setText("$"+product.getPrice());
+        holder.price.setText("$ "+product.getPrice() +" /lb");
         holder.quantity.setText(product.getQuantity()+"");
+        holder.subTotal.setText("$ "+Utils.getSubtotalStr(product.getQuantity(), product.getPrice()) + " (Subtotal)");
     }
 
     @Override
@@ -71,6 +76,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
         TextView price;
         TextView reduceQuantity;
         TextView increaseQuantity;
+        TextView subTotal;
 
         public ViewHolder(View view){
             super(view);
@@ -80,6 +86,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
             quantity = itemView.findViewById(R.id.quantity);
             reduceQuantity = itemView.findViewById(R.id.reduceQuantity);
             increaseQuantity = itemView.findViewById(R.id.increaseQuantity);
+            subTotal = itemView.findViewById(R.id.subTotal);
 
             image.setOnClickListener(view1 -> {
                 if (listener != null) {

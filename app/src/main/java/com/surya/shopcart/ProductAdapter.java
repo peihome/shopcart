@@ -54,7 +54,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         });
 
         holder.title.setText(product.getTitle());
-        holder.price.setText(product.getPrice() + "");
+        holder.price.setText("$ " + product.getPrice() + " /lb");
         holder.description.setText(product.getDescription());
         holder.quantity.setTag(product.getId());
 

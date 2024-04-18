@@ -57,49 +57,146 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
     private static final String TAG = Utils.class.getSimpleName();
 
     RecyclerView recyclerView;
-    RecyclerView.Adapter adapter;
+    CartItemAdapter adapter;
     private ArrayList<Product> cartItemsList;
     private static String userId;
 
-    private Button buyButton;
+    private static Button proceedButton;
 
     public void openCartPage(MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.cartIcon:
-                if (this.getClass().equals(CartActivity.class)) {
-                    return;
-                }
-                startActivity(new Intent(this, CartActivity.class));
-                break;
-        }
+        Utils.handleMenuCLick(this, item);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-        Toolbar menuBar = findViewById(R.id.topAppBar);
-        menuBar.setNavigationIcon(R.drawable.ic_home);
-        menuBar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!getClass().equals(ProductHomePageActivity.class)) {
-                    startActivity(new Intent(getApplicationContext(), ProductHomePageActivity.class));
-                }
-            }
-        });
+        // Home navigation icon
+        Utils.addHomeIconNavigation(this, findViewById(R.id.topAppBar));
 
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            userId = currentUser.getUid();
+        }
 
-        buyButton = findViewById(R.id.buyButton);
+        proceedButton = findViewById(R.id.buyButton);
 
-        // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference(Utils.getUserDetailPath(currentUser.getUid()));
+        handleCartItemsForView();
 
-        Utils.getMapDataFromRealTimeDataBase(Utils.getUserDetailPath(currentUser.getUid()), new OnGetDataListener() {
+    }
+
+    public void showCartItems() {
+        //ViewPager2 Flyer
+        recyclerView = findViewById(R.id.rvCartPage);
+        adapter = new CartItemAdapter(cartItemsList);
+        adapter.setOnItemClickListener((CartItemAdapter.OnItemClickListener) this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
+        Utils.handleTotalPriceChange(userId, findViewById(R.id.buyButton));
+    }
+
+    @Override
+    public void onItemClick(View view, int position, String type) {
+        Product product = cartItemsList.get(position);
+
+        TextView quantity;
+        TextView subTotal;
+        LinearLayout quantityParentLayout;
+        LinearLayout detailsLayout;
+        ConstraintLayout entireCard;
+
+        byte quantityByte = 0;
+
+        switch (type) {
+            case "image":
+                Intent productDetail = new Intent(this, ProductDetailActivity.class);
+                productDetail.putExtra("title", product.getTitle());
+                productDetail.putExtra("description", product.getDescription());
+                productDetail.putExtra("price", product.getPrice());
+                productDetail.putExtra("image", product.getImage());
+                productDetail.putExtra("id", product.getId());
+                startActivity(productDetail);
+
+                break;
+            case "reduceQuantity":
+                quantityParentLayout = (LinearLayout) view.getParent();
+                quantity = (TextView) quantityParentLayout.getChildAt(1);
+
+                detailsLayout = (LinearLayout) quantityParentLayout.getParent();
+                subTotal = (TextView) detailsLayout.getChildAt(2);
+
+                quantityByte = Byte.valueOf(quantity.getText()+"");
+                handleQuantityLayout(--quantityByte, quantity, subTotal, product, position, false);
+
+                break;
+            case "increaseQuantity":
+                quantityParentLayout = (LinearLayout) view.getParent();
+                quantity = (TextView) quantityParentLayout.getChildAt(1);
+
+                detailsLayout = (LinearLayout) quantityParentLayout.getParent();
+                subTotal = (TextView) detailsLayout.getChildAt(2);
+
+                quantityByte = Byte.valueOf(quantity.getText()+"");
+                handleQuantityLayout(++quantityByte, quantity, subTotal, product, position, true);
+
+                break;
+        }
+    }
+
+    public void handleQuantityLayout(byte quantityShort, TextView quantity, TextView subTotal, Product product, int position, boolean isIncrease) {
+        if (quantityShort <= 0) {
+            cartItemsList.remove(position);
+            adapter.notifyItemRemoved(position);
+
+            Utils.setProductQuantityForUser(userId, product.getId(), isIncrease, proceedButton);
+        } else {
+            if (quantityShort >= 20) {
+                quantity.setText("20");
+                subTotal.setText("$ " + Utils.getSubtotalStr(quantityShort, product.getPrice()) + " (Subtotal)");
+
+                Utils.setProductQuantityForUser(userId, product.getId(), isIncrease, proceedButton);
+                Toast.makeText(getApplicationContext(), "Reached maximum limit!", Toast.LENGTH_LONG).show();
+            } else if (quantityShort < 20) {
+                quantity.setText(quantityShort + "");
+                subTotal.setText("$ " + Utils.getSubtotalStr(quantityShort, product.getPrice()) +" (Subtotal)");
+
+                Utils.setProductQuantityForUser(userId, product.getId(), isIncrease, proceedButton);
+            }
+        }
+    }
+
+
+
+    public void getCartItems(String userId) {
+
+        String path = Utils.getUserDetailPath(userId);
+        Utils.getFireStoreDataFromSubCollection(path, new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    cartItemsList = new ArrayList<>();
+
+                    DocumentSnapshot document = task.getResult();
+                    Log.i(TAG, document.get("ADnoMz2LA07LtAgdGSE8")+"");
+
+                    if(document.exists()){
+                        Log.i(TAG, document.getData()+"");
+                    }
+
+
+                } else {
+                    Log.w("getData", "Error getting documents.", task.getException());
+                }
+            }
+        });
+    }
+
+
+    public void handleCartItemsForView () {
+        Utils.getMapDataFromRealTimeDataBase(Utils.getUserDetailPath(userId), new OnGetDataListener() {
             @Override
             public void onSuccess(HashMap<String, Object> dataMap) {
 
@@ -119,12 +216,19 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
                                 cartItemsList = new ArrayList<>();
+                                byte quantity;
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     Map data = document.getData();
-                                    boolean quantity = cartItemsList.add(new Product(document.getId(), data.get("image") + "",
+                                    quantity = Byte.valueOf(dataMap.get(document.getId())+"");
+                                    if(quantity <= 0){
+                                        continue;
+                                    }
+
+                                    cartItemsList.add(new Product(document.getId(), data.get("image") + "",
                                             data.get("title") + "",
                                             data.get("description") + "",
-                                            Double.valueOf(data.get("price") + ""), null, Byte.valueOf(dataMap.get(document.getId())+"")));
+                                            Double.valueOf(data.get("price") + ""), null, quantity));
+
                                 }
 
                                 if(cartItemsList.size() != products.size()) {
@@ -133,12 +237,18 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
                                         @Override
                                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                             if (task.isSuccessful()) {
+                                                byte quantity;
                                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                                     Map data = document.getData();
+                                                    quantity = Byte.valueOf(dataMap.get(document.getId())+"");
+                                                    if(quantity <= 0){
+                                                        continue;
+                                                    }
+
                                                     cartItemsList.add(new Product( document.getId(), data.get("image")+"",
                                                             data.get("title")+"",
                                                             data.get("description")+"",
-                                                            Double.valueOf(data.get("price")+""), null, Byte.valueOf(dataMap.get(document.getId())+"")));
+                                                            Double.valueOf(data.get("price")+""), null, quantity));
                                                 }
 
 
@@ -149,12 +259,18 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
                                                         @Override
                                                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                             if (task.isSuccessful()) {
+                                                                byte quantity;
                                                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                                                     Map data = document.getData();
+                                                                    quantity = Byte.valueOf(dataMap.get(document.getId())+"");
+                                                                    if(quantity <= 0){
+                                                                        continue;
+                                                                    }
+
                                                                     cartItemsList.add(new Product( document.getId(), data.get("image")+"",
                                                                             data.get("title")+"",
                                                                             data.get("description")+"",
-                                                                            Double.valueOf(data.get("price")+""), null, Byte.valueOf(dataMap.get(document.getId())+"")));
+                                                                            Double.valueOf(data.get("price")+""), null, quantity));
                                                                 }
 
                                                                 showCartItems();
@@ -185,124 +301,6 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
             @Override
             public void onFailure(Exception e) {
 
-            }
-        });
-    }
-
-    public void showCartItems() {
-        //ViewPager2 Flyer
-        recyclerView = findViewById(R.id.rvCartPage);
-        adapter = new CartItemAdapter(cartItemsList);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-
-        buyButton.setText("Proceed to Buy ($12)");
-    }
-
-    @Override
-    public void onItemClick(View view, int position, String type) {
-        Product product = cartItemsList.get(position);
-
-        TextView quantity;
-        TextView subTotal;
-        LinearLayout quantityParentLayout;
-        LinearLayout detailsLayout;
-        ConstraintLayout entireCard;
-
-        short quantityShort = 0;
-
-        switch (type) {
-            case "image":
-                Intent productDetail = new Intent(this, ProductDetailActivity.class);
-                productDetail.putExtra("title", product.getTitle());
-                productDetail.putExtra("description", product.getDescription());
-                productDetail.putExtra("price", product.getPrice());
-                productDetail.putExtra("image", product.getImage());
-                startActivity(productDetail);
-
-                break;
-            case "reduceQuantity":
-                quantityParentLayout = (LinearLayout) view.getParent();
-                quantity = (TextView) quantityParentLayout.getChildAt(1);
-
-                detailsLayout = (LinearLayout) quantityParentLayout.getParent();
-                subTotal = (TextView) detailsLayout.getChildAt(2);
-
-                quantityShort = Short.valueOf(quantity.getText()+"");
-
-                handleQuantityLayout(--quantityShort, quantity, subTotal, product, position);
-
-                break;
-            case "increaseQuantity":
-                quantityParentLayout = (LinearLayout) view.getParent();
-                quantity = (TextView) quantityParentLayout.getChildAt(1);
-
-                detailsLayout = (LinearLayout) quantityParentLayout.getParent();
-                subTotal = (TextView) detailsLayout.getChildAt(2);
-
-                quantityShort = Short.valueOf(quantity.getText()+"");
-
-                handleQuantityLayout(++quantityShort, quantity, subTotal, product, position);
-
-                break;
-        }
-
-        buyButton.setText("Proceed to buy");
-
-        Intent productDetail = new Intent(this, ProductDetailActivity.class);
-
-        productDetail.putExtra("title", product.getTitle());
-        productDetail.putExtra("description", product.getDescription());
-        productDetail.putExtra("price", product.getPrice());
-        productDetail.putExtra("image", product.getImage());
-
-        startActivity(productDetail);
-    }
-
-    public void handleQuantityLayout(short quantityShort, TextView quantity, TextView subTotal, Product product, int position) {
-        if (quantityShort <= 0) {
-            cartItemsList.remove(position);
-            adapter.notifyItemRemoved(position);
-
-            Utils.setProductQuantityForUser(userId, product.getId(), quantityShort);
-        } else {
-            if (quantityShort >= 20) {
-                quantity.setText("20");
-                subTotal.setText(Math.round(quantityShort * product.getPrice())+"");
-
-                Utils.setProductQuantityForUser(userId, product.getId(), quantityShort);
-                Toast.makeText(getApplicationContext(), "Reached maximum limit!", Toast.LENGTH_LONG).show();
-            } else if (quantityShort < 20) {
-                quantity.setText(quantityShort + "");
-                subTotal.setText(Math.round(quantityShort * product.getPrice())+"");
-
-                Utils.setProductQuantityForUser(userId, product.getId(), quantityShort);
-            }
-        }
-    }
-
-
-
-    public void getCartItems(String userId) {
-
-        String path = Utils.getUserDetailPath(userId);
-        Utils.getFireStoreDataFromSubCollection(path, new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    cartItemsList = new ArrayList<>();
-
-                    DocumentSnapshot document = task.getResult();
-                    Log.i(TAG, document.get("ADnoMz2LA07LtAgdGSE8")+"");
-
-                    if(document.exists()){
-                        Log.i(TAG, document.getData()+"");
-                    }
-
-
-                } else {
-                    Log.w("getData", "Error getting documents.", task.getException());
-                }
             }
         });
     }

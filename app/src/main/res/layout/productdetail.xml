@@ -157,14 +157,70 @@
             android:textStyle="bold"
             />
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_margin="15dp"
-            android:layout_weight="1"
-            android:textSize="17dp"
-            android:text="Add to Cart" />
+        <RelativeLayout
+            android:layout_width="220dp"
+            android:layout_height="match_parent">
+            <Button
+                android:id="@+id/addButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="15dp"
+                android:textSize="17dp"
+                android:text="Add to Cart" />
+
+
+            <LinearLayout
+                android:id="@+id/quantityLayout"
+                android:visibility="invisible"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="0dp"
+                android:orientation="horizontal"
+                android:layout_margin="15dp"
+                android:background="@drawable/border_rounded_corners_black"
+
+                >
+                <TextView
+                    android:id="@+id/reduceQuantity"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:text="-"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:textSize="27dp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    >
+                </TextView>
+                <TextView
+                    android:id="@+id/quantity"
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    android:textSize="22dp"
+                    android:text="1"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    >
+                </TextView>
+                <TextView
+                    android:id="@+id/increaseQuantity"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:text="+"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:textSize="22dp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    >
+                </TextView>
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

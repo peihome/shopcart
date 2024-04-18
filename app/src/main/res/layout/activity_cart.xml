@@ -8,6 +8,8 @@
     android:orientation="vertical"
     tools:context=".activity.CartActivity"
     android:background="@color/white"
+    android:clickable="true"
+    android:focusable="true"
     >
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

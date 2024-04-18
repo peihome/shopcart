@@ -28,9 +28,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.surya.shopcart.activity.CartActivity;
+import com.surya.shopcart.interfaces.OnGetDataListener;
 import com.surya.shopcart.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -54,9 +56,18 @@ public class ProductHomePageActivity extends AppCompatActivity implements Produc
     }
 
     @Override
+    public void onBackPressed() {
+        if(false){
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_list_horizontal);
+
 
         // Home navigation icon
         Utils.addHomeIconNavigation(this, findViewById(R.id.topAppBar));
@@ -180,7 +191,7 @@ public class ProductHomePageActivity extends AppCompatActivity implements Produc
         TextView quantity;
         LinearLayout itemDetailLayout = null;
         RelativeLayout itemDetailLayoutParent;
-        short quantityShort = 0;
+        byte quantityByte = 0;
 
         switch(type) {
 
@@ -190,6 +201,7 @@ public class ProductHomePageActivity extends AppCompatActivity implements Produc
                 productDetail.putExtra("description", product.getDescription());
                 productDetail.putExtra("price", product.getPrice());
                 productDetail.putExtra("image", product.getImage());
+                productDetail.putExtra("id", product.getId());
                 startActivity(productDetail);
                 break;
 
@@ -200,50 +212,86 @@ public class ProductHomePageActivity extends AppCompatActivity implements Produc
                 view.setVisibility(View.GONE);
 
                 TextView quantityView =  (TextView) itemDetailLayout.getChildAt(1);
-                handleQuantityLayout((short) 1, itemDetailLayout, quantityView, product);
+                handleQuantityLayout((byte) 1, itemDetailLayout, quantityView, product, true);
 
                 break;
             case "reduceQuantity":
                 itemDetailLayout = (LinearLayout) view.getParent();
                 quantity = (TextView) itemDetailLayout.getChildAt(1);
-                quantityShort = Short.valueOf(quantity.getText()+"");
-                handleQuantityLayout(--quantityShort, itemDetailLayout, quantity, product);
+                quantityByte = Byte.valueOf(quantity.getText()+"");
+                handleQuantityLayout(--quantityByte, itemDetailLayout, quantity, product, false);
 
                 break;
             case "increaseQuantity":
                 itemDetailLayout = (LinearLayout) view.getParent();
                 quantity = (TextView) itemDetailLayout.getChildAt(1);
-                quantityShort = Short.valueOf(quantity.getText()+"");
-                handleQuantityLayout(++quantityShort, itemDetailLayout, quantity, product);
+                quantityByte = Byte.valueOf(quantity.getText()+"");
+                handleQuantityLayout(++quantityByte, itemDetailLayout, quantity, product, true);
 
                 break;
         }
     }
 
-    public void handleQuantityLayout(short quantityShort, LinearLayout itemDetailLayout, TextView quantityView, Product product){
+    public void handleQuantityLayout(byte quantity, LinearLayout itemDetailLayout, TextView quantityView, Product product, boolean isIncrease) {
+
         Button addButton = (Button) ((RelativeLayout) itemDetailLayout.getParent()).getChildAt(1);
-        if(quantityShort <= 0){
+
+        Utils.getMapDataFromRealTimeDataBase(Utils.getUserDetailPath(userId), new OnGetDataListener() {
+            @Override
+            public void onSuccess(HashMap<String, Object> dataMap) {
+
+                byte quantityFromRemote = Byte.valueOf(dataMap.get(quantityView.getTag()+"")+"");
+                if(isIncrease){
+                    quantityFromRemote++;
+                }else {
+                    quantityFromRemote--;
+                }
+
+                if (quantity <= 0 || quantityFromRemote <= 0) {
+                    addButton.setVisibility(View.VISIBLE);
+                    quantityView.setText("1");
+                    itemDetailLayout.setVisibility(View.GONE);
+
+                    Utils.setProductQuantityForUser(userId, quantityView.getTag()+"", isIncrease, null);
+                } else if (quantity > 20 || quantityFromRemote > 20) {
+                    Toast.makeText(getApplicationContext(), "Reached maximum limit!", Toast.LENGTH_SHORT).show();
+                } else {
+                    quantityView.setText(quantity + "");
+                    Utils.setProductQuantityForUser(userId, quantityView.getTag()+"", isIncrease, null);
+                }
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        });
+
+
+
+
+
+
+/*
+        Button addButton = (Button) ((RelativeLayout) itemDetailLayout.getParent()).getChildAt(1);
+        if (quantity <= 0) {
             itemDetailLayout.setVisibility(View.GONE);
             addButton.setVisibility(View.VISIBLE);
-
             quantityView.setText("1");
-            Utils.setProductQuantityForUser(userId, quantityView.getTag()+"", quantityShort);
-        }else {
 
-            if(quantityShort >= 20){
-                quantityView.setText("20");
-                Utils.setProductQuantityForUser(userId, quantityView.getTag()+"", quantityShort);
-                Toast.makeText(getApplicationContext(), "Reached maximum limit!", Toast.LENGTH_LONG).show();
-            }
-            else if(quantityShort < 20) {
-                quantityView.setText(quantityShort+"");
-                Utils.setProductQuantityForUser(userId, quantityView.getTag()+"", quantityShort);
-            }
-            else {
-                itemDetailLayout.setVisibility(View.VISIBLE);
-                addButton.setVisibility(View.GONE);
-            }
+            Utils.setProductQuantityForUser(userId, quantityView.getTag() + "", isIncrease, null);
+        } else if (quantity >= 20) {
+            quantityView.setText("20");
 
+            Utils.setProductQuantityForUser(userId, quantityView.getTag() + "", isIncrease, null);
+            Toast.makeText(getApplicationContext(), "Reached maximum limit!", Toast.LENGTH_SHORT).show();
+        } else {
+            quantityView.setText(quantity + "");
+
+            Utils.setProductQuantityForUser(userId, quantityView.getTag() + "", isIncrease, null);
         }
+
+
+ */
     }
 }

@@ -3,23 +3,16 @@ package com.surya.shopcart.utils;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,23 +24,15 @@ import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.surya.shopcart.Flyer;
-import com.surya.shopcart.FlyerAdapter;
-import com.surya.shopcart.Product;
-import com.surya.shopcart.ProductAdapter;
 import com.surya.shopcart.ProductHomePageActivity;
 import com.surya.shopcart.R;
 import com.surya.shopcart.activity.CartActivity;
 import com.surya.shopcart.interfaces.OnGetDataListener;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Utils {
     private static final String appRoot = "shopCart";
@@ -60,37 +45,6 @@ public class Utils {
     public static final String flyerImages = flyers + "/images";
 
     private static final String TAG = Utils.class.getSimpleName();
-
-    public static JSONObject getProducts() {
-
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-
-        // Create your JSON data
-        Map<String, Object> jsonData = new HashMap<>();
-        jsonData.put("key1", "value1");
-        jsonData.put("key2", "value2");
-        // Add more data as needed
-
-        // Store JSON data in Firestore
-        firestore.collection("collection").document("document")
-                .set(jsonData)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // Data successfully saved
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Handle errors
-                    }
-                });
-
-
-        return null;
-    }
-
 
     public static void addDataToFireStore(HashMap<String, Object> obj, String path, OnCompleteListener<Void> onCompleteListener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -191,30 +145,35 @@ public class Utils {
         });
     }
 
-    public static void setProductQuantityForUser(String userId, String productId, short quantity){
+    public static void setProductQuantityForUser(String userId, String productId, boolean isIncrease, Button proceedButton){
 
-        String path = getUserDetailPath(userId);
-
-        Utils.getMapDataFromRealTimeDataBase(path, new OnGetDataListener() {
+        Utils.getMapDataFromRealTimeDataBase(getUserDetailPath(userId), new OnGetDataListener() {
 
             @Override
             public void onSuccess(HashMap<String, Object> productVsQuantity) {
 
-                int quantityFromRemote = 0;
+                byte quantityFromRemote = Byte.valueOf(productVsQuantity.getOrDefault(productId, 0)+"");
 
-                quantityFromRemote = Short.valueOf(productVsQuantity.getOrDefault(productId, 0)+"");
-                quantityFromRemote = quantityFromRemote + quantity;
-
-                if((quantity + quantityFromRemote) < 0){
-                    quantityFromRemote = 0;
-                }else if((quantity + quantityFromRemote) >= 20){
-                    quantityFromRemote = 20;
+                if(isIncrease){
+                    quantityFromRemote++;
+                }else{
+                    quantityFromRemote--;
                 }
-                if(quantityFromRemote == 0){
+
+                if(quantityFromRemote <= 0){
                     productVsQuantity.remove(productId);
+                }else if(quantityFromRemote >= 20){
+                    quantityFromRemote = 20;
+                    productVsQuantity.put(productId, (int)quantityFromRemote);
+                }else{
+                    productVsQuantity.put(productId, (int)quantityFromRemote);
                 }
 
-                Utils.addMapDataToRealTimeDataBase(productVsQuantity, path);
+                Utils.addMapDataToRealTimeDataBase(productVsQuantity, getUserDetailPath(userId));
+
+                if(proceedButton != null){
+                    Utils.handleTotalPriceChange(userId, proceedButton);
+                }
             }
 
             @Override
@@ -222,14 +181,10 @@ public class Utils {
                 HashMap<String, Object> productVsQuantity = new HashMap<>();
                 productVsQuantity.put(productId, 1);
 
-                Utils.addMapDataToRealTimeDataBase(productVsQuantity, path);
+                Utils.addMapDataToRealTimeDataBase(productVsQuantity, getUserDetailPath(userId));
             }
         });
 
-    }
-
-    public static String getProductQuantityPath(String userId, String productId) {
-        return Utils.users + '/' + userId + "/products/" + productId;
     }
 
     public static String getUserDetailPath(String userId) {
@@ -257,6 +212,121 @@ public class Utils {
                 context.startActivity(new Intent(context, CartActivity.class));
                 break;
         }
+    }
+
+    public static String getSubtotalStr(byte quantity, double price){
+        return Math.round(quantity * price * 100.0) / 100.0 +"";
+    }
+
+    public static float getSubtotalFloat(byte quantity, double price){
+        return (float) (Math.round(quantity * price * 100.0) / 100.0);
+    }
+
+    public static void handleTotalPriceChange(String userId, Button proceedToBuy){
+
+        Utils.getMapDataFromRealTimeDataBase(Utils.getUserDetailPath(userId), new OnGetDataListener() {
+            @Override
+            public void onSuccess(HashMap<String, Object> dataMap) {
+
+                ArrayList<String> products = new ArrayList<>();
+
+                if (dataMap != null && !dataMap.isEmpty()) {
+                    for (Map.Entry<String, Object> entry : dataMap.entrySet()) {
+                        products.add(entry.getKey());
+                    }
+                }
+
+                if (!products.isEmpty()) {
+
+                    //Fruits
+                    Utils.getFireStoreDataByIds(Utils.fruits, products, new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                ArrayList<Float> subTotals = new ArrayList<>();
+                                byte quantity;
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    quantity = Byte.valueOf(dataMap.get(document.getId()) + "");
+                                    double price = Double.valueOf(document.get("price") + "");
+                                    if (quantity <= 0) {
+                                        continue;
+                                    }
+                                    subTotals.add(Utils.getSubtotalFloat(quantity, price));
+                                }
+
+                                if (subTotals.size() != products.size()) {
+                                    //Veggies
+                                    Utils.getFireStoreDataByIds(Utils.veggies, products, new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                byte quantity;
+                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                    quantity = Byte.valueOf(dataMap.get(document.getId()) + "");
+                                                    double price = Double.valueOf(document.get("price") + "");
+                                                    if (quantity <= 0) {
+                                                        continue;
+                                                    }
+                                                    subTotals.add(Utils.getSubtotalFloat(quantity, price));
+                                                }
+
+
+                                                if (subTotals.size() != products.size()) {
+
+                                                    //Veggies
+                                                    Utils.getFireStoreDataByIds(Utils.beverages, products, new OnCompleteListener<QuerySnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                            if (task.isSuccessful()) {
+                                                                byte quantity;
+                                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                    quantity = Byte.valueOf(dataMap.get(document.getId()) + "");
+                                                                    double price = Double.valueOf(document.get("price") + "");
+                                                                    if (quantity <= 0) {
+                                                                        continue;
+                                                                    }
+                                                                    subTotals.add(Utils.getSubtotalFloat(quantity, price));
+                                                                }
+
+                                                                setTotalAmount(subTotals, proceedToBuy);
+                                                            } else {
+                                                                Log.w("getData", "Error getting documents.", task.getException());
+                                                            }
+                                                        }
+                                                    });
+                                                } else {
+                                                    setTotalAmount(subTotals, proceedToBuy);
+                                                }
+                                            } else {
+                                                Log.w("getData", "Error getting documents.", task.getException());
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    setTotalAmount(subTotals, proceedToBuy);
+                                }
+                            } else {
+                                Log.w("getData", "Error getting documents.", task.getException());
+                            }
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        });
+    }
+
+    public static void setTotalAmount(ArrayList<Float> subTotals, Button proceedButton) {
+        float totalAmount = 0;
+        for(float subTotal : subTotals){
+            totalAmount += subTotal;
+        }
+
+        proceedButton.setText("Proceed to Buy $ " + totalAmount);
     }
 
 }
