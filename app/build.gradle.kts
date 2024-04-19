@@ -48,5 +48,6 @@ dependencies {
     implementation("com.google.firebase:firebase-bom:32.8.0")
     implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
     implementation("com.squareup.picasso:picasso:2.71828")
+    implementation("org.apache.commons:commons-email:1.5")
 
 }

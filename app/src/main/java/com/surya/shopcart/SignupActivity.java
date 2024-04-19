@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.surya.shopcart.utils.Utils;
 
 import org.w3c.dom.Text;
 
@@ -63,25 +64,39 @@ public class SignupActivity extends AppCompatActivity {
 
         if (email.isEmpty()) {
             Toast.makeText(getApplicationContext(), getString(R.string.user_email_empty_error_msg), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!Utils.isValidEmail(email)) {
+            Toast.makeText(getApplicationContext(), getString(R.string.user_email_invalid_error_msg), Toast.LENGTH_SHORT).show();
+            return;
         }
 
         if (password.isEmpty()) {
             Toast.makeText(getApplicationContext(), getString(R.string.user_password_empty_error_msg), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!Utils.isValidPassword(password)) {
+            Toast.makeText(getApplicationContext(), getString(R.string.user_password_invalid_error_msg), Toast.LENGTH_SHORT).show();
+            return;
         }
 
         if (retypedPassword.isEmpty()) {
             Toast.makeText(getApplicationContext(), getString(R.string.user_retyped_password_empty_error_msg), Toast.LENGTH_SHORT).show();
+            return;
         }
 
         if (!password.equals(retypedPassword)) {
             Toast.makeText(getApplicationContext(), getString(R.string.user_password_not_same_msg), Toast.LENGTH_SHORT).show();
+            return;
         }
 
         createUser(email, password);
     }
 
     public void createUser(String email, String password) {
-        final Context context = this; // Capture the activity context
+        final Context context = this;
 
         try {
             FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
@@ -89,14 +104,13 @@ public class SignupActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                // Sign in success, start the new activity
+                                Toast.makeText(context, R.string.user_account_creation_success, Toast.LENGTH_SHORT).show();
                                 Intent loginPageIntent = new Intent(context, LoginActivity.class);
                                 loginPageIntent.putExtra("email", email);
                                 context.startActivity(loginPageIntent);
                                 ((Activity) context).finish(); // Close the login activity to prevent going back to it with the back button
                             } else {
-                                // Sign in failed, display a message to the user
-                                Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, R.string.user_account_creation_failure, Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

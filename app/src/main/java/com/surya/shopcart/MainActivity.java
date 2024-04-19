@@ -12,6 +12,7 @@ import com.surya.shopcart.activity.CartActivity;
 import com.surya.shopcart.cardpage.CardActivity;
 import com.surya.shopcart.checkout.CheckoutActivity;
 import com.surya.shopcart.confirmorder.ConfirmOrderActivity;
+import com.surya.shopcart.thankyou.ThankyouActivity;
 import com.surya.shopcart.utils.Utils;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
         //To be removed
         //Utils.getProducts();
-        startActivity(new Intent(this, CheckoutActivity.class));
+        startActivity(new Intent(this, CartActivity.class));
 
         //Login Page Activity
         Button clickToStart = findViewById(R.id.clickToStart);

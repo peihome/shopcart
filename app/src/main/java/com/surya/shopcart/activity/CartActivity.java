@@ -1,5 +1,6 @@
 package com.surya.shopcart.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +28,8 @@ import com.surya.shopcart.Product;
 import com.surya.shopcart.ProductDetailActivity;
 import com.surya.shopcart.R;
 import com.surya.shopcart.adapter.CartItemAdapter;
+import com.surya.shopcart.cart.EmptyCartActivity;
+import com.surya.shopcart.confirmorder.ConfirmOrderActivity;
 import com.surya.shopcart.interfaces.OnGetDataListener;
 import com.surya.shopcart.utils.Utils;
 
@@ -38,12 +41,12 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
 
     private static final String TAG = Utils.class.getSimpleName();
 
-    RecyclerView recyclerView;
+    public RecyclerView recyclerView;
     CartItemAdapter adapter;
     private ArrayList<Product> cartItemsList;
     private static String userId;
-
     private static Button proceedButton;
+    public TextView grandsubtotalTV;
 
     public void openCartPage(MenuItem item) {
         Utils.handleMenuCLick(this, item);
@@ -64,9 +67,12 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
         }
 
         proceedButton = findViewById(R.id.buyButton);
+        grandsubtotalTV = findViewById(R.id.grandsubtotal);
+
 
         proceedButton.setOnClickListener(view -> {
-
+            Intent confirmOrderActivity = new Intent(this, ConfirmOrderActivity.class);
+            startActivity(confirmOrderActivity);
         });
 
         handleCartItemsForView();
@@ -75,13 +81,15 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
 
     public void showCartItems() {
         //ViewPager2 Flyer
-        recyclerView = findViewById(R.id.rvCartPage);
+        if(recyclerView == null){
+            recyclerView = findViewById(R.id.rvCartPage);
+        }
         adapter = new CartItemAdapter(cartItemsList);
         adapter.setOnItemClickListener((CartItemAdapter.OnItemClickListener) this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        Utils.handleTotalPriceChange(userId, findViewById(R.id.buyButton));
+        Utils.handleTotalPriceChange(userId, proceedButton, grandsubtotalTV);
     }
 
     @Override
@@ -137,7 +145,7 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
             cartItemsList.remove(position);
             adapter.notifyItemRemoved(position);
 
-            Utils.setProductQuantityForUser(userId, product.getId(), isIncrease, proceedButton);
+            Utils.setProductQuantityForUser(userId, product.getId(), isIncrease, proceedButton, grandsubtotalTV, this);
         } else {
             if (quantityShort >= 20) {
                 quantity.setText("20");
@@ -149,28 +157,10 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
                 quantity.setText(quantityShort + "");
                 subTotal.setText("$ " + Utils.getSubtotalStr(quantityShort, product.getPrice()) +" (Subtotal)");
 
-                Utils.setProductQuantityForUser(userId, product.getId(), isIncrease, proceedButton);
+                Utils.setProductQuantityForUser(userId, product.getId(), isIncrease, proceedButton, grandsubtotalTV, this);
             }
         }
     }
-
-
-
-    public void getCartItems(String userId) {
-
-        String path = Utils.getUserCartItemsPath(userId);
-        Utils.getFireStoreDataFromSubCollection(path, new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    cartItemsList = new ArrayList<>();
-                } else {
-                    Log.w("getData", "Error getting documents.", task.getException());
-                }
-            }
-        });
-    }
-
 
     public void handleCartItemsForView () {
         Utils.getMapDataFromRealTimeDataBase(Utils.getUserCartItemsPath(userId), new OnGetDataListener() {
@@ -277,7 +267,9 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
 
             @Override
             public void onFailure(Exception e) {
-
+                Intent emptyCartIntent = new Intent(getApplicationContext(), EmptyCartActivity.class);
+                startActivity(emptyCartIntent);
+                finish();
             }
         });
     }

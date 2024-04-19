@@ -16,6 +16,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.surya.shopcart.ProductHomePageActivity;
 import com.surya.shopcart.R;
 import com.surya.shopcart.checkout.CheckoutActivity;
 import com.surya.shopcart.confirmorder.ConfirmOrderActivity;
@@ -63,6 +64,7 @@ public class CardActivity extends AppCompatActivity {
         cvvET = findViewById(R.id.cvv);
         cardNumberLayout = findViewById(R.id.cardNumberLayout);
         Button continueButton = findViewById(R.id.continueButton);
+        Button cancelButton = findViewById(R.id.cancelButton);
 
         prefillFormIfDataExists();
 
@@ -87,13 +89,21 @@ public class CardActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
 
+                        Toast.makeText(getApplicationContext(), "Card details stored!", Toast.LENGTH_LONG).show();
+
                         //Proceed to card page
                         Intent cardPage = new Intent(getApplicationContext(), ConfirmOrderActivity.class);
                         startActivity(cardPage);
+                        finish();
 
                     }
                 });
             }
+        });
+
+        cancelButton.setOnClickListener(view -> {
+            Intent cardPage = new Intent(getApplicationContext(), ProductHomePageActivity.class);
+            startActivity(cardPage);
         });
 
         cardNumberET.addTextChangedListener(new TextWatcher() {

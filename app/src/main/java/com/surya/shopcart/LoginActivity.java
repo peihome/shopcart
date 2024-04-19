@@ -18,9 +18,23 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.surya.shopcart.utils.Utils;
 
+import java.util.regex.Pattern;
+
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+
 public class LoginActivity extends AppCompatActivity {
+
+
+    @Override
+    public void onBackPressed() {
+        if(false){
+            super.onBackPressed();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +74,10 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        /*else if(!Utils.isValidEmailAddress(email)){
-            Toast.makeText(getApplicationContext(), getString(R.string.user_email_invalid), Toast.LENGTH_SHORT).show();
+        if(!Utils.isValidEmail(email)){
+            Toast.makeText(getApplicationContext(), getString(R.string.user_email_invalid_error_msg), Toast.LENGTH_SHORT).show();
             return;
-        }*/
+        }
 
         if(password.isEmpty()){
             Toast.makeText(getApplicationContext(), getString(R.string.user_password_empty_error_msg), Toast.LENGTH_SHORT).show();
@@ -72,7 +86,6 @@ public class LoginActivity extends AppCompatActivity {
 
         isValidUser(email, password);
     }
-
 
     public void isValidUser(String email, String password) {
         final Context context = this; // Capture the activity context
@@ -84,13 +97,11 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                // Sign in success, start the new activity
                                 Toast.makeText(context, getString(R.string.user_signin_success), Toast.LENGTH_SHORT).show();
                                 Intent productPageIntent = new Intent(context, ProductHomePageActivity.class);
                                 context.startActivity(productPageIntent);
-                                ((Activity) context).finish(); // Close the login activity to prevent going back to it with the back button
+                                ((Activity) context).finish();
                             } else {
-                                // Sign in failed, display a message to the user
                                 Toast.makeText(context, getString(R.string.user_signin_failure), Toast.LENGTH_SHORT).show();
                             }
                         }

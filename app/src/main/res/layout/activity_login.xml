@@ -9,12 +9,11 @@
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="226dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="56dp"
-        android:layout_marginEnd="81dp"
-        android:layout_marginBottom="2dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView4"
-        app:layout_constraintEnd_toEndOf="@+id/textView4"
+        android:layout_height="209dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/shop_cart_logo" />
 
@@ -22,25 +21,23 @@
         android:id="@+id/register"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="12dp"
         android:padding="20dp"
         android:text="Login"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout5"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout5"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
     <LinearLayout
         android:id="@+id/linearLayout5"
         android:layout_width="405dp"
         android:layout_height="26dp"
-        android:layout_marginBottom="113dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/register">
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/textView5"
@@ -49,7 +46,7 @@
             android:layout_weight="1"
             android:gravity="right"
             android:text="Not Registered ? "
-            android:textSize="15dp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
@@ -60,7 +57,7 @@
             android:gravity="left"
             android:text="Create account"
             android:textColor="#F7520B"
-            android:textSize="15dp"
+            android:textSize="20sp"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -68,15 +65,15 @@
         android:id="@+id/password"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="45dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/rounded_corners"
         android:backgroundTint="#f2e7df"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
         android:padding="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/register"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email" />
 
@@ -84,30 +81,30 @@
         android:id="@+id/email"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="9dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/rounded_corners"
         android:backgroundTint="#f2e7df"
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
         android:padding="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/password"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="0dp"
+        android:layout_width="411dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="26dp"
-        android:text="LOGIN"
+        android:layout_marginTop="8dp"
 
+        android:text="LOGIN"
         android:textAlignment="center"
         android:textSize="30dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/email"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 

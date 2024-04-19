@@ -22,8 +22,10 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.surya.shopcart.ProductHomePageActivity;
 import com.surya.shopcart.R;
 import com.surya.shopcart.cardpage.CardActivity;
+import com.surya.shopcart.confirmorder.ConfirmOrderActivity;
 import com.surya.shopcart.interfaces.OnGetDataListener;
 import com.surya.shopcart.utils.Utils;
 
@@ -112,7 +114,7 @@ public class CheckoutActivity extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
 
                         //Proceed to card page
-                        Intent cardPage = new Intent(getApplicationContext(), CardActivity.class);
+                        Intent cardPage = new Intent(getApplicationContext(), ConfirmOrderActivity.class);
                         startActivity(cardPage);
 
                     }
@@ -121,6 +123,9 @@ public class CheckoutActivity extends AppCompatActivity {
         });
 
         cancelButton.setOnClickListener(view -> {
+            //Proceed to card page
+            Intent cardPage = new Intent(getApplicationContext(), ProductHomePageActivity.class);
+            startActivity(cardPage);
             finish();
         });
 

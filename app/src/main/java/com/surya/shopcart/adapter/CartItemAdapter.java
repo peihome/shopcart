@@ -4,8 +4,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,13 +15,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 import com.surya.shopcart.Product;
-import com.surya.shopcart.ProductAdapter;
 import com.surya.shopcart.R;
 import com.surya.shopcart.utils.Utils;
 
 import java.util.ArrayList;
-
-import okhttp3.internal.Util;
 
 public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHolder> {
 
@@ -31,8 +28,15 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
 
     FirebaseStorage storage = FirebaseStorage.getInstance();
 
+    boolean showQuantityLayout = true;
+
     public CartItemAdapter(ArrayList<Product> cartItemsList) {
         this.cartItemsList = cartItemsList;
+    }
+
+    public CartItemAdapter(ArrayList<Product> cartItemsList, Boolean showQuantityLayout) {
+        this.cartItemsList = cartItemsList;
+        this.showQuantityLayout = showQuantityLayout;
     }
 
     public void setOnItemClickListener(CartItemAdapter.OnItemClickListener listener) {
@@ -62,6 +66,9 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
         holder.price.setText("$ "+product.getPrice() +" /lb");
         holder.quantity.setText(product.getQuantity()+"");
         holder.subTotal.setText("$ "+Utils.getSubtotalStr(product.getQuantity(), product.getPrice()) + " (Subtotal)");
+        if(!showQuantityLayout){
+            holder.quantityLayout.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -77,6 +84,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
         TextView reduceQuantity;
         TextView increaseQuantity;
         TextView subTotal;
+        LinearLayout quantityLayout;
 
         public ViewHolder(View view){
             super(view);
@@ -86,7 +94,8 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
             quantity = itemView.findViewById(R.id.quantity);
             reduceQuantity = itemView.findViewById(R.id.reduceQuantity);
             increaseQuantity = itemView.findViewById(R.id.increaseQuantity);
-            subTotal = itemView.findViewById(R.id.subTotal);
+            subTotal = itemView.findViewById(R.id.grandTotal);
+            quantityLayout = itemView.findViewById(R.id.quantityLayout);
 
             image.setOnClickListener(view1 -> {
                 if (listener != null) {

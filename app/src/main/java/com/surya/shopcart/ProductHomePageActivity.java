@@ -20,11 +20,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.surya.shopcart.confirmorder.ConfirmOrderActivity;
 import com.surya.shopcart.interfaces.OnGetDataListener;
 import com.surya.shopcart.utils.Utils;
 
@@ -228,6 +230,16 @@ public class ProductHomePageActivity extends AppCompatActivity implements Produc
             @Override
             public void onSuccess(HashMap<String, Object> dataMap) {
 
+                if(!dataMap.containsKey(quantityView.getTag()+"")){
+                    addButton.setVisibility(View.GONE);
+                    quantityView.setText("1");
+                    itemDetailLayout.setVisibility(View.VISIBLE);
+
+                    Utils.setProductQuantityForUser(userId, quantityView.getTag()+"", isIncrease, null);
+
+                    return;
+                }
+
                 byte quantityFromRemote = Byte.valueOf(dataMap.get(quantityView.getTag()+"")+"");
                 if(isIncrease){
                     quantityFromRemote++;
@@ -251,6 +263,11 @@ public class ProductHomePageActivity extends AppCompatActivity implements Produc
 
             @Override
             public void onFailure(Exception e) {
+                addButton.setVisibility(View.GONE);
+                quantityView.setText("1");
+                itemDetailLayout.setVisibility(View.VISIBLE);
+
+                Utils.setProductQuantityForUser(userId, quantityView.getTag()+"", isIncrease, null);
 
             }
         });

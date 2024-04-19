@@ -16,6 +16,12 @@
         android:theme="@style/Theme.ShopCart"
         tools:targetApi="31">
         <activity
+            android:name=".cart.EmptyCartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".thankyou.ThankyouActivity"
+            android:exported="false" />
+        <activity
             android:name=".confirmorder.ConfirmOrderActivity"
             android:exported="false" />
         <activity

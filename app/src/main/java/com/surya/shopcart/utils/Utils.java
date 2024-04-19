@@ -29,6 +29,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.surya.shopcart.ProductHomePageActivity;
 import com.surya.shopcart.R;
 import com.surya.shopcart.activity.CartActivity;
+import com.surya.shopcart.cart.EmptyCartActivity;
 import com.surya.shopcart.interfaces.OnGetDataListener;
 
 import java.util.ArrayList;
@@ -36,6 +37,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 
 public class Utils {
     private static final String appRoot = "shopCart";
@@ -50,6 +54,10 @@ public class Utils {
     public static final String flyerImages = flyers + "/images";
 
     private static final String TAG = Utils.class.getSimpleName();
+
+    public static short totalQuantity=0;
+    public static float taxFloat=0;
+    public static float discount=0;
 
     public static void addDataToFireStore(HashMap<String, Object> obj, String path, OnCompleteListener<Void> onCompleteListener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -141,7 +149,6 @@ public class Utils {
                 Object value = dataSnapshot.getValue();
 
                 if (value instanceof HashMap) {
-                    @SuppressWarnings("unchecked")
                     HashMap<String, Object> data = (HashMap<String, Object>) value;
                     listener.onSuccess(data);
                 } else {
@@ -158,7 +165,19 @@ public class Utils {
         });
     }
 
+
+    public static void deleteDataFromRealTimeDatabase(String path, OnSuccessListener<Void> onSuccessListener) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        database.getReference(path).removeValue().addOnSuccessListener(onSuccessListener);
+    }
+
     public static void setProductQuantityForUser(String userId, String productId, boolean isIncrease, Button proceedButton){
+        setProductQuantityForUser(userId, productId, isIncrease, proceedButton, null);
+    }
+    public static void setProductQuantityForUser(String userId, String productId, boolean isIncrease, Button proceedButton, TextView grandsubtotal){
+        setProductQuantityForUser(userId, productId, isIncrease, proceedButton, grandsubtotal, null);
+    }
+    public static void setProductQuantityForUser(String userId, String productId, boolean isIncrease, Button proceedButton, TextView grandsubtotal, Context context){
 
         Utils.getMapDataFromRealTimeDataBase(getUserCartItemsPath(userId), new OnGetDataListener() {
 
@@ -184,9 +203,7 @@ public class Utils {
 
                 Utils.addMapDataToRealTimeDataBase(productVsQuantity, getUserCartItemsPath(userId));
 
-                if(proceedButton != null){
-                    Utils.handleTotalPriceChange(userId, proceedButton);
-                }
+                Utils.handleTotalPriceChange(userId, proceedButton, grandsubtotal, null, null, context);
             }
 
             @Override
@@ -247,8 +264,21 @@ public class Utils {
         handleTotalPriceChange(userId, proceedToBuy, null, null, null);
     }
 
-    public static void handleTotalPriceChange(String userId, Button proceedToBuy, TextView total, TextView tax, TextView subTotal){
+    public static void handleTotalPriceChange(String userId, Button proceedToBuy, TextView total){
+        handleTotalPriceChange(userId, proceedToBuy, total, null, null);
+    }
 
+    public static void handleTotalPriceChange(String userId, Button proceedToBuy, TextView total, TextView tax, TextView subTotal){
+        handleTotalPriceChange(userId, proceedToBuy, total, tax, subTotal, null);
+    }
+    public static void handleTotalPriceChange(String userId, Button proceedToBuy, TextView total, TextView tax, TextView subTotal, Context context){
+        handleTotalPriceChange(userId, proceedToBuy, total, tax, subTotal, context, null);
+    }
+    public static void handleTotalPriceChange(String userId, Button proceedToBuy, TextView total, TextView tax, TextView subTotal, Context context, TextView discountTV){
+
+        totalQuantity = 0;
+        taxFloat = 0;
+        discount = 0;
         Utils.getMapDataFromRealTimeDataBase(Utils.getUserCartItemsPath(userId), new OnGetDataListener() {
             @Override
             public void onSuccess(HashMap<String, Object> dataMap) {
@@ -258,6 +288,7 @@ public class Utils {
                 if (dataMap != null && !dataMap.isEmpty()) {
                     for (Map.Entry<String, Object> entry : dataMap.entrySet()) {
                         products.add(entry.getKey());
+                        totalQuantity += Byte.parseByte(entry.getValue()+"");
                     }
                 }
 
@@ -269,14 +300,15 @@ public class Utils {
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
                                 ArrayList<Float> subTotals = new ArrayList<>();
-                                byte quantity;
+                                byte quantity = 0;
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     quantity = Byte.valueOf(dataMap.get(document.getId()) + "");
                                     double price = Double.valueOf(document.get("price") + "");
                                     if (quantity <= 0) {
                                         continue;
                                     }
-                                    subTotals.add(Utils.getSubtotalFloat(quantity, price));
+
+                                    handleCalculation(document, quantity, price, subTotals);
                                 }
 
                                 if (subTotals.size() != products.size()) {
@@ -285,16 +317,15 @@ public class Utils {
                                         @Override
                                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                             if (task.isSuccessful()) {
-                                                byte quantity;
+                                                byte quantity = 0;
                                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                                     quantity = Byte.valueOf(dataMap.get(document.getId()) + "");
                                                     double price = Double.valueOf(document.get("price") + "");
                                                     if (quantity <= 0) {
                                                         continue;
                                                     }
-                                                    subTotals.add(Utils.getSubtotalFloat(quantity, price));
+                                                    handleCalculation(document, quantity, price, subTotals);
                                                 }
-
 
                                                 if (subTotals.size() != products.size()) {
 
@@ -303,24 +334,23 @@ public class Utils {
                                                         @Override
                                                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                             if (task.isSuccessful()) {
-                                                                byte quantity;
+                                                                byte quantity = 0;
                                                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                                                     quantity = Byte.valueOf(dataMap.get(document.getId()) + "");
                                                                     double price = Double.valueOf(document.get("price") + "");
                                                                     if (quantity <= 0) {
                                                                         continue;
                                                                     }
-                                                                    subTotals.add(Utils.getSubtotalFloat(quantity, price));
+                                                                    handleCalculation(document, quantity, price, subTotals);
                                                                 }
-
-                                                                setTotalAmount(subTotals, proceedToBuy, total, tax, subTotal);
+                                                                setTotalAmount(subTotals, proceedToBuy, total, tax, subTotal, discountTV);
                                                             } else {
                                                                 Log.w("getData", "Error getting documents.", task.getException());
                                                             }
                                                         }
                                                     });
                                                 } else {
-                                                    setTotalAmount(subTotals, proceedToBuy, total, tax, subTotal);
+                                                    setTotalAmount(subTotals, proceedToBuy, total, tax, subTotal, discountTV);
                                                 }
                                             } else {
                                                 Log.w("getData", "Error getting documents.", task.getException());
@@ -328,7 +358,7 @@ public class Utils {
                                         }
                                     });
                                 } else {
-                                    setTotalAmount(subTotals, proceedToBuy, total, tax, subTotal);
+                                    setTotalAmount(subTotals, proceedToBuy, total, tax, subTotal, discountTV);
                                 }
                             } else {
                                 Log.w("getData", "Error getting documents.", task.getException());
@@ -340,28 +370,50 @@ public class Utils {
 
             @Override
             public void onFailure(Exception e) {
-
+                if(context != null){
+                    ArrayList<Float> subTotals = new ArrayList<>();
+                    setTotalAmount(subTotals, proceedToBuy, total, tax, subTotal);
+                    Intent emptyCart = new Intent(context, EmptyCartActivity.class);
+                    context.startActivity(emptyCart);
+                }
             }
         });
     }
 
     public static void setTotalAmount(ArrayList<Float> subTotals, Button proceedButton, TextView total, TextView tax, TextView subTotalView) {
+        setTotalAmount(subTotals, proceedButton, total, tax, subTotalView, null);
+    }
+
+    public static void setTotalAmount(ArrayList<Float> subTotals, Button proceedButton, TextView total, TextView tax, TextView subTotalView, TextView discountTV) {
         float totalAmount = 0;
         for(float subTotal : subTotals){
             totalAmount += subTotal;
         }
 
-        proceedButton.setText("Proceed to Buy $ " + (Math.round(totalAmount * 100.0) / 100.0));
-        if(total != null){
-            total.setText(totalAmount+"");
+        String itemStr = "("+ totalQuantity +" items)";
+        if(totalQuantity == 1){
+            itemStr = "("+ subTotals.size() +" item)";
+        }
+
+        if(proceedButton != null){
+            proceedButton.setText("Proceed to checkout "+itemStr);
         }
 
         if(tax != null){
-            tax.setText(getSubtotalStr((byte)1, totalAmount * 0.13));
+            //tax.setText("$ "+getSubtotalStr((byte)1, totalAmount * 0.13));
+            tax.setText("$ "+taxFloat);
+        }
+
+        if(discountTV != null){
+            discountTV.setText("$ "+discount);
         }
 
         if(subTotalView != null){
-            subTotalView.setText(getSubtotalStr((byte)1, totalAmount * 1.13));
+            subTotalView.setText("$ "+getSubtotalStr((byte)1, totalAmount));
+        }
+
+        if(total != null){
+            total.setText("$ " + getSubtotalStr((byte)1, totalAmount + taxFloat - discount));
         }
     }
 
@@ -371,6 +423,53 @@ public class Utils {
             cardNumberSB.setCharAt(i, '*');
         }
         return cardNumberSB.toString();
+    }
+
+    public static boolean isValidEmail(String email) {
+        boolean valid = true;
+        try {
+            InternetAddress emailAddr = new InternetAddress(email);
+            emailAddr.validate();
+        } catch (AddressException e) {
+            valid = false;
+        }
+        return valid;
+    }
+    public static boolean isValidPassword(String password) {
+        // Minimum 8 chars
+        // Maximum 15 chars
+        // Atleast 1 upper case
+        // Atleast 1 lower case
+        // Atleast 1 number
+        // Atleast 1 special char
+        Pattern regex = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,15}$");
+
+        return regex.matcher(password).matches();
+    }
+
+    public static void handleCalculation(QueryDocumentSnapshot document, byte quantity, double price, ArrayList<Float> subTotals){
+        float subTotal = Utils.getSubtotalFloat(quantity, price);
+        float taxPercent = 0;
+        float discountPercent = 0;
+        try{
+            taxPercent = Float.parseFloat(document.get("tax")+"");
+        }catch(Exception e){
+
+        }
+        try{
+            discountPercent = Float.parseFloat(document.get("discount")+"");
+        }catch(Exception e){
+
+        }
+
+        if(document.contains("tax")){
+            taxFloat += Utils.getSubtotalFloat((byte)1,subTotal * taxPercent);
+        }
+        if(document.contains("discount")){
+            discount += Utils.getSubtotalFloat((byte)1, subTotal * discountPercent);
+        }
+
+        subTotals.add(subTotal);
     }
 
 }

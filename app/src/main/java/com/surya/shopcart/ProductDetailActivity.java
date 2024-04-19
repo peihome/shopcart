@@ -134,7 +134,11 @@ public class ProductDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Exception e) {
+                addButton.setVisibility(View.GONE);
+                quantityView.setText("1");
+                quantityLayout.setVisibility(View.VISIBLE);
 
+                Utils.setProductQuantityForUser(userId, productId, isIncrease, null);
             }
         });
     }
