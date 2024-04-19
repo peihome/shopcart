@@ -1,37 +1,24 @@
 package com.surya.shopcart;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.surya.shopcart.interfaces.OnGetDataListener;
 import com.surya.shopcart.utils.Utils;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
@@ -117,7 +104,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     public void handleQuantityLayout(byte quantity, Button addButton, LinearLayout quantityLayout, TextView quantityView, String productId,  boolean isIncrease) {
 
-        Utils.getMapDataFromRealTimeDataBase(Utils.getUserDetailPath(userId), new OnGetDataListener() {
+        Utils.getMapDataFromRealTimeDataBase(Utils.getUserCartItemsPath(userId), new OnGetDataListener() {
             @Override
             public void onSuccess(HashMap<String, Object> dataMap) {
 

@@ -7,11 +7,13 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
@@ -33,9 +35,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class Utils {
     private static final String appRoot = "shopCart";
+    public static final String province = appRoot + "/province";
+    public static final String vendorVsRegex = appRoot + "/vendorVsRegex";
     private static final String products = appRoot + "/products";
     private static final String users = appRoot + "/users";
     public static final String fruits = products + "/fruits";
@@ -118,6 +123,14 @@ public class Utils {
         myRef.setValue(obj);
     }
 
+    public static void addMapDataToRealTimeDataBase(HashMap<String, Object> obj, String path, OnSuccessListener<Void> onSuccessListener) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(path);
+
+        myRef.setValue(obj)
+                .addOnSuccessListener(onSuccessListener);
+    }
+
     public static void getMapDataFromRealTimeDataBase(String path, final OnGetDataListener listener) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(path);
@@ -147,7 +160,7 @@ public class Utils {
 
     public static void setProductQuantityForUser(String userId, String productId, boolean isIncrease, Button proceedButton){
 
-        Utils.getMapDataFromRealTimeDataBase(getUserDetailPath(userId), new OnGetDataListener() {
+        Utils.getMapDataFromRealTimeDataBase(getUserCartItemsPath(userId), new OnGetDataListener() {
 
             @Override
             public void onSuccess(HashMap<String, Object> productVsQuantity) {
@@ -169,7 +182,7 @@ public class Utils {
                     productVsQuantity.put(productId, (int)quantityFromRemote);
                 }
 
-                Utils.addMapDataToRealTimeDataBase(productVsQuantity, getUserDetailPath(userId));
+                Utils.addMapDataToRealTimeDataBase(productVsQuantity, getUserCartItemsPath(userId));
 
                 if(proceedButton != null){
                     Utils.handleTotalPriceChange(userId, proceedButton);
@@ -181,14 +194,22 @@ public class Utils {
                 HashMap<String, Object> productVsQuantity = new HashMap<>();
                 productVsQuantity.put(productId, 1);
 
-                Utils.addMapDataToRealTimeDataBase(productVsQuantity, getUserDetailPath(userId));
+                Utils.addMapDataToRealTimeDataBase(productVsQuantity, getUserCartItemsPath(userId));
             }
         });
 
     }
 
-    public static String getUserDetailPath(String userId) {
+    public static String getUserCartItemsPath(String userId) {
         return Utils.users + '/' + userId + "/products";
+    }
+
+    public static String getUserAddressPath(String userId) {
+        return Utils.users + '/' + userId + "/address";
+    }
+
+    public static String getUserCardPath(String userId) {
+        return Utils.users + '/' + userId + "/card";
     }
 
     public static void addHomeIconNavigation(Context context, Toolbar menuBar){
@@ -222,9 +243,13 @@ public class Utils {
         return (float) (Math.round(quantity * price * 100.0) / 100.0);
     }
 
-    public static void handleTotalPriceChange(String userId, Button proceedToBuy){
+    public static void handleTotalPriceChange(String userId, Button proceedToBuy) {
+        handleTotalPriceChange(userId, proceedToBuy, null, null, null);
+    }
 
-        Utils.getMapDataFromRealTimeDataBase(Utils.getUserDetailPath(userId), new OnGetDataListener() {
+    public static void handleTotalPriceChange(String userId, Button proceedToBuy, TextView total, TextView tax, TextView subTotal){
+
+        Utils.getMapDataFromRealTimeDataBase(Utils.getUserCartItemsPath(userId), new OnGetDataListener() {
             @Override
             public void onSuccess(HashMap<String, Object> dataMap) {
 
@@ -288,14 +313,14 @@ public class Utils {
                                                                     subTotals.add(Utils.getSubtotalFloat(quantity, price));
                                                                 }
 
-                                                                setTotalAmount(subTotals, proceedToBuy);
+                                                                setTotalAmount(subTotals, proceedToBuy, total, tax, subTotal);
                                                             } else {
                                                                 Log.w("getData", "Error getting documents.", task.getException());
                                                             }
                                                         }
                                                     });
                                                 } else {
-                                                    setTotalAmount(subTotals, proceedToBuy);
+                                                    setTotalAmount(subTotals, proceedToBuy, total, tax, subTotal);
                                                 }
                                             } else {
                                                 Log.w("getData", "Error getting documents.", task.getException());
@@ -303,7 +328,7 @@ public class Utils {
                                         }
                                     });
                                 } else {
-                                    setTotalAmount(subTotals, proceedToBuy);
+                                    setTotalAmount(subTotals, proceedToBuy, total, tax, subTotal);
                                 }
                             } else {
                                 Log.w("getData", "Error getting documents.", task.getException());
@@ -320,13 +345,32 @@ public class Utils {
         });
     }
 
-    public static void setTotalAmount(ArrayList<Float> subTotals, Button proceedButton) {
+    public static void setTotalAmount(ArrayList<Float> subTotals, Button proceedButton, TextView total, TextView tax, TextView subTotalView) {
         float totalAmount = 0;
         for(float subTotal : subTotals){
             totalAmount += subTotal;
         }
 
-        proceedButton.setText("Proceed to Buy $ " + totalAmount);
+        proceedButton.setText("Proceed to Buy $ " + (Math.round(totalAmount * 100.0) / 100.0));
+        if(total != null){
+            total.setText(totalAmount+"");
+        }
+
+        if(tax != null){
+            tax.setText(getSubtotalStr((byte)1, totalAmount * 0.13));
+        }
+
+        if(subTotalView != null){
+            subTotalView.setText(getSubtotalStr((byte)1, totalAmount * 1.13));
+        }
+    }
+
+    public static String getMaskedCardNumberForDisplay(String cardNumber){
+        StringBuilder cardNumberSB = new StringBuilder(cardNumber);
+        for(int i=0;i<cardNumber.length()-4;i++){
+            cardNumberSB.setCharAt(i, '*');
+        }
+        return cardNumberSB.toString();
     }
 
 }

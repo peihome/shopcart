@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -16,7 +15,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -27,7 +25,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.surya.shopcart.activity.CartActivity;
 import com.surya.shopcart.interfaces.OnGetDataListener;
 import com.surya.shopcart.utils.Utils;
 
@@ -42,7 +39,7 @@ public class ProductHomePageActivity extends AppCompatActivity implements Produc
     ViewPager2 vPager;
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
-    Handler handler = new Handler();
+    static Handler handler = new Handler();
     ArrayList<Product> productList = new ArrayList<>();
     ArrayList<Flyer> flyersList = new ArrayList<>();
 
@@ -50,6 +47,8 @@ public class ProductHomePageActivity extends AppCompatActivity implements Produc
     private static Timer scrollTimer;
     private static TimerTask scrollTimerTask;
     private static String userId;
+
+    private static Runnable updateRunnable;
 
     public void openCartPage(MenuItem item) {
         Utils.handleMenuCLick(this, item);
@@ -131,7 +130,7 @@ public class ProductHomePageActivity extends AppCompatActivity implements Produc
                     adapter = new FlyerAdapter(flyersList);
                     vPager.setAdapter(adapter);
 
-                    autoSlideFlyers(adapter, vPager, handler);
+                    //autoSlideFlyers(adapter, vPager);
 
                 } else {
                     Log.w("getData", "Error getting documents.", task.getException());
@@ -140,10 +139,10 @@ public class ProductHomePageActivity extends AppCompatActivity implements Produc
         });
     }
 
-    public static void autoSlideFlyers(RecyclerView.Adapter adapter, ViewPager2 vPager, Handler handler){
+    public static void autoSlideFlyers(RecyclerView.Adapter adapter, ViewPager2 vPager){
         /*After setting the adapter use the timer */
         int totalPages = adapter.getItemCount();
-        final Runnable updateRunnable = new Runnable() {
+        updateRunnable = new Runnable() {
             public void run() {
                 if (currentPage == totalPages) {
                     currentPage = 0;
@@ -153,32 +152,21 @@ public class ProductHomePageActivity extends AppCompatActivity implements Produc
         };
 
         scrollTimer = new Timer();
-        scrollTimerTask = new TimerTask() { // task to be scheduled
+        scrollTimerTask = new TimerTask() {
             @Override
             public void run() {
                 handler.post(updateRunnable);
             }
         };
 
-        scrollTimer.schedule(scrollTimerTask, 5000, 5000);
+        //scrollTimer.schedule(scrollTimerTask, 5000, 5000);
 
-        // Set a listener for user interaction with ViewPager2
         vPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrollStateChanged(int state) {
                 super.onPageScrollStateChanged(state);
-                if (state == ViewPager2.SCROLL_STATE_DRAGGING || state == ViewPager2.SCROLL_STATE_SETTLING) {
-                    // User is interacting with the ViewPager2, so pause the timer
-                    scrollTimerTask.cancel();
-                } else if (state == ViewPager2.SCROLL_STATE_IDLE) {
-                    // ViewPager2 is idle, restart the timer
-                    scrollTimerTask = new TimerTask() {
-                        @Override
-                        public void run() {
-                            handler.post(updateRunnable);
-                        }
-                    };
-                    scrollTimer.schedule(scrollTimerTask, 5000, 5000);
+                if (state == ViewPager2.SCROLL_STATE_DRAGGING) {
+                    startTimers(10000, 5000);
                 }
             }
         });
@@ -236,7 +224,7 @@ public class ProductHomePageActivity extends AppCompatActivity implements Produc
 
         Button addButton = (Button) ((RelativeLayout) itemDetailLayout.getParent()).getChildAt(1);
 
-        Utils.getMapDataFromRealTimeDataBase(Utils.getUserDetailPath(userId), new OnGetDataListener() {
+        Utils.getMapDataFromRealTimeDataBase(Utils.getUserCartItemsPath(userId), new OnGetDataListener() {
             @Override
             public void onSuccess(HashMap<String, Object> dataMap) {
 
@@ -266,32 +254,50 @@ public class ProductHomePageActivity extends AppCompatActivity implements Produc
 
             }
         });
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        cancelTimers();
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        cancelTimers();
+    }
 
-
-
-
-/*
-        Button addButton = (Button) ((RelativeLayout) itemDetailLayout.getParent()).getChildAt(1);
-        if (quantity <= 0) {
-            itemDetailLayout.setVisibility(View.GONE);
-            addButton.setVisibility(View.VISIBLE);
-            quantityView.setText("1");
-
-            Utils.setProductQuantityForUser(userId, quantityView.getTag() + "", isIncrease, null);
-        } else if (quantity >= 20) {
-            quantityView.setText("20");
-
-            Utils.setProductQuantityForUser(userId, quantityView.getTag() + "", isIncrease, null);
-            Toast.makeText(getApplicationContext(), "Reached maximum limit!", Toast.LENGTH_SHORT).show();
-        } else {
-            quantityView.setText(quantity + "");
-
-            Utils.setProductQuantityForUser(userId, quantityView.getTag() + "", isIncrease, null);
+    private static void cancelTimers() {
+        if (scrollTimer != null) {
+            scrollTimer.cancel();
+            scrollTimer = null;
         }
+        if (scrollTimerTask != null) {
+            scrollTimerTask.cancel();
+            scrollTimerTask = null;
+        }
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //startTimers(5000, 5000);
+    }
 
- */
+    private static void startTimers(long delay, long period) {
+        cancelTimers();
+        if(scrollTimer == null){
+            scrollTimer = new Timer();
+        }else {
+            scrollTimer = new Timer();
+        }
+        scrollTimerTask = new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(updateRunnable);
+            }
+        };
+        scrollTimer.schedule(scrollTimerTask, delay, period);
     }
 }

@@ -62,7 +62,6 @@
                 android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/holderName"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -70,6 +69,7 @@
                 android:layout_marginBottom="18dp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/holderName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="Card Holder Name"
@@ -79,18 +79,20 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/cardNumber"
+                android:id="@+id/cardNumberLayout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="18dp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/cardNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Card Number"
                     android:inputType="number"
-                    android:maxLength="19" />
+                    android:maxLength="19" >
+                </com.google.android.material.textfield.TextInputEditText>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -110,12 +112,12 @@
                     android:weightSum="2">
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/expiryDate"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/expiryDate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="MM / YY"
@@ -132,16 +134,16 @@
                     android:orientation="vertical">
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/cvv"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/cvv"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="CVV"
-                            android:inputType="number"
+                            android:inputType="numberPassword"
                             android:maxLength="3" />
 
                     </com.google.android.material.textfield.TextInputLayout>

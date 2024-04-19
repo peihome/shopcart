@@ -77,12 +77,12 @@
                     android:weightSum="2">
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/firstName"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/firstName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="First Name"
@@ -99,12 +99,12 @@
                     android:orientation="vertical">
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/lastName"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/lastName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Last Name"
@@ -116,13 +116,13 @@
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/streetAddress"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="18dp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/streetAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Street Address" />
@@ -130,27 +130,29 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/floorNumber"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="18dp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/floorNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Floor # (optional)" />
+                    android:hint="Floor # (optional)"
+                    android:inputType="number"
+                    />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/city"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="18dp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/city"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="City" />
@@ -159,7 +161,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_marginBottom="18dp"
                 android:orientation="horizontal"
                 android:weightSum="2">
@@ -174,17 +176,19 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/province"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.textfield.TextInputEditText
+                        android:layout_height="wrap_content"
+                        android:hint="Province"
+                        android:background="@color/white"
+                        >
+                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                            android:id="@+id/proviceTextView"
+                            android:dropDownHeight="350dp"
+                            android:inputType="none"
+                            android:layout_height="match_parent"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Province"
-                            android:inputType="text"
-                            android:maxLength="30" />
-
+                            />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
@@ -195,17 +199,17 @@
                     android:orientation="vertical">
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/zipCode"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/zipcode"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Zip Code"
                             android:inputType="text"
-                            android:maxLength="6" />
+                            android:maxLength="7" />
 
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>

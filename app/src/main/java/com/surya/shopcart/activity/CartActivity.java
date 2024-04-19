@@ -7,46 +7,28 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.surya.shopcart.FlyerAdapter;
 import com.surya.shopcart.Product;
-import com.surya.shopcart.ProductAdapter;
 import com.surya.shopcart.ProductDetailActivity;
-import com.surya.shopcart.ProductHomePageActivity;
 import com.surya.shopcart.R;
 import com.surya.shopcart.adapter.CartItemAdapter;
 import com.surya.shopcart.interfaces.OnGetDataListener;
 import com.surya.shopcart.utils.Utils;
-
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -82,6 +64,10 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
         }
 
         proceedButton = findViewById(R.id.buyButton);
+
+        proceedButton.setOnClickListener(view -> {
+
+        });
 
         handleCartItemsForView();
 
@@ -158,7 +144,7 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
                 subTotal.setText("$ " + Utils.getSubtotalStr(quantityShort, product.getPrice()) + " (Subtotal)");
 
                 Utils.setProductQuantityForUser(userId, product.getId(), isIncrease, proceedButton);
-                Toast.makeText(getApplicationContext(), "Reached maximum limit!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Reached maximum limit!", Toast.LENGTH_SHORT).show();
             } else if (quantityShort < 20) {
                 quantity.setText(quantityShort + "");
                 subTotal.setText("$ " + Utils.getSubtotalStr(quantityShort, product.getPrice()) +" (Subtotal)");
@@ -172,21 +158,12 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
 
     public void getCartItems(String userId) {
 
-        String path = Utils.getUserDetailPath(userId);
+        String path = Utils.getUserCartItemsPath(userId);
         Utils.getFireStoreDataFromSubCollection(path, new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     cartItemsList = new ArrayList<>();
-
-                    DocumentSnapshot document = task.getResult();
-                    Log.i(TAG, document.get("ADnoMz2LA07LtAgdGSE8")+"");
-
-                    if(document.exists()){
-                        Log.i(TAG, document.getData()+"");
-                    }
-
-
                 } else {
                     Log.w("getData", "Error getting documents.", task.getException());
                 }
@@ -196,7 +173,7 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
 
 
     public void handleCartItemsForView () {
-        Utils.getMapDataFromRealTimeDataBase(Utils.getUserDetailPath(userId), new OnGetDataListener() {
+        Utils.getMapDataFromRealTimeDataBase(Utils.getUserCartItemsPath(userId), new OnGetDataListener() {
             @Override
             public void onSuccess(HashMap<String, Object> dataMap) {
 
