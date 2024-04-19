@@ -401,19 +401,19 @@ public class Utils {
 
         if(tax != null){
             //tax.setText("$ "+getSubtotalStr((byte)1, totalAmount * 0.13));
-            tax.setText("$ "+taxFloat);
+            tax.setText("$ "+getSubtotalStr((byte)1, taxFloat));
         }
 
         if(discountTV != null){
-            discountTV.setText("$ "+discount);
+            discountTV.setText("$ "+getSubtotalStr((byte)1, discount));
         }
 
         if(subTotalView != null){
-            subTotalView.setText("$ "+getSubtotalStr((byte)1, totalAmount));
+            subTotalView.setText("$ " + getSubtotalStr((byte)1, totalAmount + taxFloat - discount));
         }
 
         if(total != null){
-            total.setText("$ " + getSubtotalStr((byte)1, totalAmount + taxFloat - discount));
+            total.setText("$ "+getSubtotalStr((byte)1, totalAmount));
         }
     }
 

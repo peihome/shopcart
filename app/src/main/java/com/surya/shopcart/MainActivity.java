@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
         //To be removed
         //Utils.getProducts();
-        startActivity(new Intent(this, CartActivity.class));
+        //startActivity(new Intent(this, CartActivity.class));
 
         //Login Page Activity
         Button clickToStart = findViewById(R.id.clickToStart);
