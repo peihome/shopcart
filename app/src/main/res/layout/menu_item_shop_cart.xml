@@ -7,7 +7,7 @@
         android:id="@+id/shopCartTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ShopCart"
+        android:text="ShopNGo"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
         android:textStyle="bold|italic"

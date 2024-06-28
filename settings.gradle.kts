@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ShopCart"
+rootProject.name = "ShopNGo"
 include(":app")

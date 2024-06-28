@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ShopCart</string>
+    <string name="app_name">ShopNGo</string>
     <string name="favoriteicon">favoriteIcon</string>
     <string name="user.email.empty.error.msg">Email cannot be empty!</string>
     <string name="user.email.invalid.error.msg">Invalid Email Id!</string>

@@ -11,7 +11,7 @@
         android:gravity="center_vertical"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        android:text="ShopCart"
+        android:text="ShopNGo"
         android:textColor="@android:color/white"
         android:textSize="24dp"
         android:textStyle="bold|italic" />

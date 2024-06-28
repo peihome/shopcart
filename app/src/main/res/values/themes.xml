@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.ShopCart" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.ShopNGo" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="colorPrimary">@color/primaryColor</item>
@@ -11,5 +11,5 @@
         <item name="colorAccent">@android:color/white</item>
     </style>
 
-    <style name="Theme.ShopCart" parent="Base.Theme.ShopCart" />
+    <style name="Theme.ShopNGo" parent="Base.Theme.ShopNGo" />
 </resources>

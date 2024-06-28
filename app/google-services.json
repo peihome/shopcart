@@ -1,15 +1,15 @@
 {
   "project_info": {
     "project_number": "463710974181",
-    "project_id": "shopcart-101",
-    "storage_bucket": "shopcart-101.appspot.com"
+    "project_id": "shopngo-101",
+    "storage_bucket": "shopngo-101.appspot.com"
   },
   "client": [
     {
       "client_info": {
         "mobilesdk_app_id": "1:463710974181:android:724956f2c8014e1bef240c",
         "android_client_info": {
-          "package_name": "com.surya.shopcart"
+          "package_name": "com.surya.shopngo"
         }
       },
       "oauth_client": [],

@@ -8,11 +8,12 @@
 
     <LinearLayout
         android:id="@+id/linearLayout5"
-        android:layout_width="329dp"
-        android:layout_height="45dp"
+        android:layout_width="326dp"
+        android:layout_height="44dp"
         android:orientation="horizontal"
-        tools:layout_editor_absoluteX="42dp"
-        tools:layout_editor_absoluteY="720dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/textView5"
@@ -21,7 +22,7 @@
             android:layout_weight="1"
             android:gravity="right"
             android:text="Already have an account ? "
-            android:textSize="15dp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
@@ -32,32 +33,36 @@
             android:gravity="left"
             android:text="Login"
             android:textColor="#F7520B"
-            android:textSize="15dp"
+            android:textSize="18dp"
             android:textStyle="bold" />
     </LinearLayout>
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="211dp"
-        android:layout_height="163dp"
+        android:layout_width="209dp"
+        android:layout_height="128dp"
+        android:layout_marginTop="80dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/shop_cart_logo" />
 
     <LinearLayout
         android:id="@+id/linearLayout3"
-        android:layout_width="341dp"
-        android:layout_height="498dp"
+        android:layout_width="394dp"
+        android:layout_height="412dp"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="35dp"
-        tools:layout_editor_absoluteY="178dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2">
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="5dp"
             android:text="REGISTER"
             android:textAlignment="center"
             android:textSize="30dp"
@@ -69,8 +74,7 @@
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/rounded_corners"
             android:backgroundTint="#f2e7df"
             android:ems="10"
@@ -82,8 +86,8 @@
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/rounded_corners"
             android:backgroundTint="#f2e7df"
             android:ems="10"
@@ -95,8 +99,8 @@
             android:id="@+id/repeatPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/rounded_corners"
             android:backgroundTint="#f2e7df"
             android:ems="10"
