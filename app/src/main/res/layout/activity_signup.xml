@@ -46,7 +46,7 @@
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/shop_cart_logo" />
+        app:srcCompat="@drawable/shop_n_go" />
 
     <LinearLayout
         android:id="@+id/linearLayout3"

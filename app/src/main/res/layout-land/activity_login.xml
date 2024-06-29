@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toStartOf="@+id/textView4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/shop_cart_logo" />
+        app:srcCompat="@drawable/shop_n_go" />
 
     <Button
         android:id="@+id/register"
