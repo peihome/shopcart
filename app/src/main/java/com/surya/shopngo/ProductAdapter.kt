@@ -27,7 +27,7 @@ class ProductAdapter(private val productList: ArrayList<Product>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val product = productList[position]
+        val product : Product = productList[position]
         val storageRef = storage.getReference()
         val pathReference = storageRef.child(product.getImage())
         pathReference.getDownloadUrl()

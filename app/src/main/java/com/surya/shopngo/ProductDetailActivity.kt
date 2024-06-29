@@ -15,7 +15,7 @@ import com.surya.shopngo.interfaces.OnGetDataListener
 import com.surya.shopngo.utils.Utils
 
 class ProductDetailActivity : AppCompatActivity() {
-    fun openCartPage(item: MenuItem?) {
+    fun openCartPage(item: MenuItem) {
         Utils.handleMenuCLick(this, item)
     }
 
@@ -134,8 +134,8 @@ class ProductDetailActivity : AppCompatActivity() {
         Utils.getMapDataFromRealTimeDataBase(
             Utils.getUserCartItemsPath(userId),
             object : OnGetDataListener {
-                override fun onSuccess(dataMap: HashMap<String, Any>) {
-                    var quantityFromRemote = (dataMap[productId].toString() + "").toByte()
+                override fun onSuccess(dataMap: HashMap<String?, Any?>?) {
+                    var quantityFromRemote = (dataMap!![productId].toString() + "").toByte()
                     if (isIncrease) {
                         quantityFromRemote++
                     } else {
@@ -161,7 +161,7 @@ class ProductDetailActivity : AppCompatActivity() {
                     }
                 }
 
-                override fun onFailure(e: Exception) {
+                override fun onFailure(e: Exception?) {
                     addButton.visibility = View.GONE
                     quantityView.text = "1"
                     quantityLayout.visibility = View.VISIBLE
@@ -171,6 +171,6 @@ class ProductDetailActivity : AppCompatActivity() {
     }
 
     companion object {
-        var userId: String? = null
+        lateinit var userId: String
     }
 }

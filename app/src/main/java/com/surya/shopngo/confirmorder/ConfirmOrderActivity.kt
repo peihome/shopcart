@@ -22,24 +22,24 @@ import com.surya.shopngo.thankyou.ThankyouActivity
 import com.surya.shopngo.utils.Utils
 
 class ConfirmOrderActivity : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
-    var userId: String? = null
-    var recyclerView: RecyclerView? = null
-    var adapter: CartItemAdapter? = null
-    private var cartItemsList: ArrayList<Product>? = null
-    var nameTV: TextView? = null
-    var streetAddressTV: TextView? = null
-    var addressLine2TV: TextView? = null
-    var holderNameTV: TextView? = null
-    var vendorTV: TextView? = null
-    var cardNumberTV: TextView? = null
-    var orderTotalTV: TextView? = null
-    var taxTV: TextView? = null
-    var subTotalTV: TextView? = null
-    var discountTV: TextView? = null
-    var changeCard: Button? = null
-    var changeAddress: Button? = null
-    var buyButton: Button? = null
-    fun openCartPage(item: MenuItem?) {
+    lateinit var userId: String
+    lateinit var recyclerView: RecyclerView
+    lateinit var adapter: CartItemAdapter
+    lateinit private var cartItemsList: ArrayList<Product>
+    lateinit var nameTV: TextView
+    lateinit var streetAddressTV: TextView
+    lateinit var addressLine2TV: TextView
+    lateinit var holderNameTV: TextView
+    lateinit var vendorTV: TextView
+    lateinit var cardNumberTV: TextView
+    lateinit var orderTotalTV: TextView
+    lateinit var taxTV: TextView
+    lateinit var subTotalTV: TextView
+    lateinit var discountTV: TextView
+    lateinit var changeCard: Button
+    lateinit var changeAddress: Button
+    lateinit var buyButton: Button
+    fun openCartPage(item: MenuItem) {
         Utils.handleMenuCLick(this, item)
     }
 
@@ -174,7 +174,7 @@ class ConfirmOrderActivity : AppCompatActivity(), CartItemAdapter.OnItemClickLis
                             if (task.isSuccessful) {
                                 cartItemsList = ArrayList()
                                 var quantity: Byte
-                                for (document in task.result) {
+                                for (document in task.result!!) {
                                     val data: Map<*, *> = document.getData()
                                     quantity = (dataMap!![document.id].toString() + "").toByte()
                                     if (quantity <= 0) {
@@ -197,7 +197,7 @@ class ConfirmOrderActivity : AppCompatActivity(), CartItemAdapter.OnItemClickLis
                                     Utils.getFireStoreDataByIds(Utils.veggies, products) { task ->
                                         if (task.isSuccessful) {
                                             var quantity: Byte
-                                            for (document in task.result) {
+                                            for (document in task.result!!) {
                                                 val data: Map<*, *> = document.getData()
                                                 quantity =
                                                     (dataMap!![document.id].toString() + "").toByte()
@@ -225,7 +225,7 @@ class ConfirmOrderActivity : AppCompatActivity(), CartItemAdapter.OnItemClickLis
                                                 ) { task ->
                                                     if (task.isSuccessful) {
                                                         var quantity: Byte
-                                                        for (document in task.result) {
+                                                        for (document in task.result!!) {
                                                             val data: Map<*, *> = document.getData()
                                                             quantity =
                                                                 (dataMap!![document.id].toString() + "").toByte()
@@ -294,7 +294,7 @@ class ConfirmOrderActivity : AppCompatActivity(), CartItemAdapter.OnItemClickLis
         Utils.handleTotalPriceChange(userId, findViewById(R.id.buyButton))
     }
 
-    override fun onItemClick(view: View, position: Int, type: String) {
+    override fun onItemClick(view: View?, position: Int, type: String?) {
         val product = cartItemsList!![position]
         when (type) {
             "image" -> {

@@ -1,51 +1,27 @@
 package com.surya.shopngo
 
-class Product {
-    @JvmField
-    var image: String
-    @JvmField
-    var title: String
-    @JvmField
-    var description: String
-    @JvmField
-    var price: Double
-    @JvmField
-    var id: String
-    var path: String
-    @JvmField
+data class Product (
+    var id: String,
+    var image: String,
+    var title: String,
+    var description: String,
+    var price: Double,
+    var path: String?,
     var quantity: Byte = 0
-
-    constructor(
-        id: String,
-        image: String,
-        title: String,
-        description: String,
-        price: Double,
-        path: String
-    ) {
-        this.id = id
-        this.image = image
-        this.title = title
-        this.description = description
-        this.price = price
-        this.path = path
+) {
+    fun getImage(): String {
+        return image
     }
-
-    constructor(
-        id: String,
-        image: String,
-        title: String,
-        description: String,
-        price: Double,
-        path: String,
-        quantity: Byte
-    ) {
-        this.id = id
-        this.image = image
-        this.title = title
-        this.description = description
-        this.price = price
-        this.path = path
-        this.quantity = quantity
+    fun getPrice(): Double {
+        return price
+    }
+    fun getTitle(): String {
+        return title
+    }
+    fun getDescription(): String {
+        return description
+    }
+    fun getId(): String {
+        return id;
     }
 }

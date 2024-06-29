@@ -24,12 +24,12 @@ import java.util.Timer
 import java.util.TimerTask
 
 class ProductHomePageActivity : AppCompatActivity(), ProductAdapter.OnItemClickListener {
-    var vPager: ViewPager2? = null
-    var recyclerView: RecyclerView? = null
-    var adapter: RecyclerView.Adapter<*>? = null
-    var productList = ArrayList<Product>()
-    var flyersList = ArrayList<Flyer>()
-    fun openCartPage(item: MenuItem?) {
+    lateinit var vPager: ViewPager2
+    lateinit var recyclerView: RecyclerView
+    lateinit var adapter: RecyclerView.Adapter<*>
+    lateinit var productList: ArrayList<Product>
+    lateinit var flyersList: ArrayList<Flyer>
+    fun openCartPage(item: MenuItem) {
         Utils.handleMenuCLick(this, item)
     }
 
@@ -173,8 +173,8 @@ class ProductHomePageActivity : AppCompatActivity(), ProductAdapter.OnItemClickL
         Utils.getMapDataFromRealTimeDataBase(
             Utils.getUserCartItemsPath(userId),
             object : OnGetDataListener {
-                override fun onSuccess(dataMap: HashMap<String, Any>) {
-                    if (!dataMap.containsKey(quantityView.tag.toString() + "")) {
+                override fun onSuccess(dataMap: HashMap<String?, Any?>?) {
+                    if (!dataMap!!.containsKey(quantityView.tag.toString() + "")) {
                         addButton.visibility = View.GONE
                         quantityView.text = "1"
                         itemDetailLayout.visibility = View.VISIBLE
@@ -220,7 +220,7 @@ class ProductHomePageActivity : AppCompatActivity(), ProductAdapter.OnItemClickL
                     }
                 }
 
-                override fun onFailure(e: Exception) {
+                override fun onFailure(e: Exception?) {
                     addButton.visibility = View.GONE
                     quantityView.text = "1"
                     itemDetailLayout.visibility = View.VISIBLE
@@ -250,12 +250,12 @@ class ProductHomePageActivity : AppCompatActivity(), ProductAdapter.OnItemClickL
     }
 
     companion object {
-        var handler = Handler()
-        private var currentPage = 0
+        lateinit var handler: Handler
+        var currentPage: Int? = 0
         private var scrollTimer: Timer? = null
         private var scrollTimerTask: TimerTask? = null
-        private var userId: String? = null
-        private var updateRunnable: Runnable? = null
+        lateinit private var userId: String
+        lateinit private var updateRunnable: Runnable
         fun autoSlideFlyers(adapter: RecyclerView.Adapter<*>, vPager: ViewPager2) {
             /*After setting the adapter use the timer */
             val totalPages = adapter.itemCount
@@ -263,7 +263,8 @@ class ProductHomePageActivity : AppCompatActivity(), ProductAdapter.OnItemClickL
                 if (currentPage == totalPages) {
                     currentPage = 0
                 }
-                vPager.setCurrentItem(currentPage++, true)
+                currentPage = currentPage!! + 1
+                vPager.setCurrentItem(currentPage!!, true)
             }
             scrollTimer = Timer()
             scrollTimerTask = object : TimerTask() {

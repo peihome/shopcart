@@ -41,7 +41,7 @@ object Utils {
     const val flyers = appRoot + "/flyers"
     const val flyerImages = flyers + "/images"
     private val TAG = Utils::class.java.getSimpleName()
-    var totalQuantity: Short = 0
+    var totalQuantity: Int = 0
     var taxFloat = 0f
     var discount = 0f
     fun addDataToFireStore(
@@ -315,7 +315,7 @@ object Utils {
                 if (dataMap != null && !dataMap.isEmpty()) {
                     for ((key, value) in dataMap) {
                         products.add(key)
-                        (totalQuantity += (value.toString() + "").toByte()).toShort()
+                        totalQuantity = totalQuantity + (value.toString() + "").toInt()
                     }
                 }
                 if (!products.isEmpty()) {
@@ -325,7 +325,7 @@ object Utils {
                         if (task.isSuccessful) {
                             val subTotals = ArrayList<Float>()
                             var quantity: Byte = 0
-                            for (document in task.result) {
+                            for (document in task.result!!) {
                                 quantity = (dataMap!![document.id].toString() + "").toByte()
                                 val price = (document["price"].toString() + "").toDouble()
                                 if (quantity <= 0) {
@@ -341,7 +341,7 @@ object Utils {
                                     OnCompleteListener { task ->
                                         if (task.isSuccessful) {
                                             var quantity: Byte = 0
-                                            for (document in task.result) {
+                                            for (document in task.result!!) {
                                                 quantity =
                                                     (dataMap!![document.id].toString() + "").toByte()
                                                 val price =
@@ -365,7 +365,7 @@ object Utils {
                                                     OnCompleteListener { task ->
                                                         if (task.isSuccessful) {
                                                             var quantity: Byte = 0
-                                                            for (document in task.result) {
+                                                            for (document in task.result!!) {
                                                                 quantity =
                                                                     (dataMap!![document.id].toString() + "").toByte()
                                                                 val price =

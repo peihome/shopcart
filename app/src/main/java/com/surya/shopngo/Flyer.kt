@@ -1,3 +1,7 @@
 package com.surya.shopngo
 
-class Flyer(var image: String)
+data class Flyer(var image: String){
+    fun getImage(): String {
+        return image;
+    }
+}

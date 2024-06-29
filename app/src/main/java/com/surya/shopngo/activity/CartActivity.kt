@@ -28,7 +28,7 @@ class CartActivity : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
     var adapter: CartItemAdapter? = null
     private var cartItemsList: ArrayList<Product>? = null
     var grandsubtotalTV: TextView? = null
-    fun openCartPage(item: MenuItem?) {
+    fun openCartPage(item: MenuItem) {
         Utils.handleMenuCLick(this, item)
     }
 
@@ -174,7 +174,7 @@ class CartActivity : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
                             if (task.isSuccessful) {
                                 cartItemsList = ArrayList()
                                 var quantity: Byte
-                                for (document in task.result) {
+                                for (document in task.result!!) {
                                     val data: Map<*, *> = document.getData()
                                     quantity = (dataMap!![document.id].toString() + "").toByte()
                                     if (quantity <= 0) {
@@ -197,7 +197,7 @@ class CartActivity : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
                                     Utils.getFireStoreDataByIds(Utils.veggies, products) { task ->
                                         if (task.isSuccessful) {
                                             var quantity: Byte
-                                            for (document in task.result) {
+                                            for (document in task.result!!) {
                                                 val data: Map<*, *> = document.getData()
                                                 quantity =
                                                     (dataMap!![document.id].toString() + "").toByte()
@@ -225,7 +225,7 @@ class CartActivity : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
                                                 ) { task ->
                                                     if (task.isSuccessful) {
                                                         var quantity: Byte
-                                                        for (document in task.result) {
+                                                        for (document in task.result!!) {
                                                             val data: Map<*, *> = document.getData()
                                                             quantity =
                                                                 (dataMap!![document.id].toString() + "").toByte()
@@ -284,7 +284,7 @@ class CartActivity : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
 
     companion object {
         private val TAG = Utils::class.java.getSimpleName()
-        private var userId: String? = null
-        private var proceedButton: Button? = null
+        lateinit private var userId: String
+        lateinit private var proceedButton: Button
     }
 }

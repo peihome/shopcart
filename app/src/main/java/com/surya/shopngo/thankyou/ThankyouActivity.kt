@@ -13,7 +13,7 @@ import com.surya.shopngo.utils.Utils
 
 class ThankyouActivity : AppCompatActivity() {
     var userId: String? = null
-    fun openCartPage(item: MenuItem?) {
+    fun openCartPage(item: MenuItem) {
         Utils.handleMenuCLick(this, item)
     }
 

@@ -11,7 +11,7 @@ import com.surya.shopngo.R
 import com.surya.shopngo.utils.Utils
 
 class EmptyCartActivity : AppCompatActivity() {
-    fun openCartPage(item: MenuItem?) {
+    fun openCartPage(item: MenuItem) {
         Utils.handleMenuCLick(this, item)
     }
 

@@ -22,17 +22,17 @@ import java.util.Locale
 import java.util.regex.Pattern
 
 class CheckoutActivity : AppCompatActivity() {
-    private var userId: String? = null
-    var proviceTextView: MaterialAutoCompleteTextView? = null
-    var continueButton: Button? = null
-    var firstNameET: TextInputEditText? = null
-    var lastNameET: TextInputEditText? = null
-    var streetAddressET: TextInputEditText? = null
-    var floorNumberET: TextInputEditText? = null
-    var cityET: TextInputEditText? = null
-    var zipcodeET: TextInputEditText? = null
-    var cancelButton: Button? = null
-    fun openCartPage(item: MenuItem?) {
+    lateinit private var userId: String
+    lateinit var proviceTextView: MaterialAutoCompleteTextView
+    lateinit var continueButton: Button
+    lateinit var firstNameET: TextInputEditText
+    lateinit var lastNameET: TextInputEditText
+    lateinit var streetAddressET: TextInputEditText
+    lateinit var floorNumberET: TextInputEditText
+    lateinit var cityET: TextInputEditText
+    lateinit var zipcodeET: TextInputEditText
+    lateinit var cancelButton: Button
+    fun openCartPage(item: MenuItem) {
         Utils.handleMenuCLick(this, item)
     }
 
@@ -77,7 +77,7 @@ class CheckoutActivity : AppCompatActivity() {
                 province
             )
             if (result) {
-                val addressMap = HashMap<String, Any?>()
+                val addressMap = HashMap<String?, Any?>()
                 addressMap["firstName"] = firstName
                 addressMap["lastName"] = lastName
                 addressMap["streetAddress"] = streetAddress
@@ -200,7 +200,7 @@ class CheckoutActivity : AppCompatActivity() {
         private var province: String? = null
         private const val validationResult = false
         private var pattern: String? = null
-        private var regex: Pattern? = null
+        lateinit private var regex: Pattern
         fun validateName(name: String?): Boolean {
             val pattern = "^[A-Za-z]{3,50}$"
             val regex = Pattern.compile(pattern)

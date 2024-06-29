@@ -23,17 +23,17 @@ import java.util.Calendar
 import java.util.regex.Pattern
 
 class CardActivity : AppCompatActivity() {
-    var holderNameET: TextInputEditText? = null
-    var expiryDateET: TextInputEditText? = null
-    var cardNumberET: TextInputEditText? = null
-    var cvvET: TextInputEditText? = null
-    var holderName: String? = null
-    var cardNumber: String? = null
-    var expiryDate: String? = null
-    var cvv: String? = null
-    var userId: String? = null
-    var cardNumberLayout: TextInputLayout? = null
-    fun openCartPage(item: MenuItem?) {
+    lateinit var holderNameET: TextInputEditText
+    lateinit var expiryDateET: TextInputEditText
+    lateinit var cardNumberET: TextInputEditText
+    lateinit var cvvET: TextInputEditText
+    lateinit var holderName: String
+    lateinit var cardNumber: String
+    lateinit var expiryDate: String
+    lateinit var cvv: String
+    lateinit var userId: String
+    lateinit var cardNumberLayout: TextInputLayout
+    fun openCartPage(item: MenuItem) {
         Utils.handleMenuCLick(this, item)
     }
 
@@ -63,7 +63,7 @@ class CardActivity : AppCompatActivity() {
             cvv = cvvET.getText().toString()
             val result = validationResult()
             if (result) {
-                val cardMap = HashMap<String, Any>()
+                val cardMap = HashMap<String?, Any?>()
                 cardMap["holderName"] = holderName!!
                 cardMap["cardNumber"] = cardNumber!!
                 cardMap["expiryDate"] = expiryDate!!
@@ -193,7 +193,7 @@ class CardActivity : AppCompatActivity() {
 
     companion object {
         private val TAG = CheckoutActivity::class.java.getSimpleName()
-        private var regex: Pattern? = null
+        lateinit private var regex: Pattern
         private val vendorVsRegex = HashMap<String?, String>()
         fun validateCVV(cvv: String?): Boolean {
             regex = Pattern.compile("^[0-9]{3}$")
