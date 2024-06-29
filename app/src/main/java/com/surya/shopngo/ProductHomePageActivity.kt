@@ -129,18 +129,18 @@ class ProductHomePageActivity : AppCompatActivity(), ProductAdapter.OnItemClickL
         when (type) {
             "image" -> {
                 val productDetail = Intent(this, ProductDetailActivity::class.java)
-                productDetail.putExtra("title", product.getTitle())
-                productDetail.putExtra("description", product.getDescription())
-                productDetail.putExtra("price", product.getPrice())
-                productDetail.putExtra("image", product.getImage())
-                productDetail.putExtra("id", product.getId())
+                productDetail.putExtra("title", product.fetchTitle())
+                productDetail.putExtra("description", product.fetchDescription())
+                productDetail.putExtra("price", product.fetchPrice())
+                productDetail.putExtra("image", product.fetchImage())
+                productDetail.putExtra("id", product.fetchId())
                 startActivity(productDetail)
             }
 
             "addButton" -> {
                 itemDetailLayoutParent = view.parent as RelativeLayout
                 itemDetailLayout = itemDetailLayoutParent.getChildAt(2) as LinearLayout
-                itemDetailLayout!!.visibility = View.VISIBLE
+                itemDetailLayout.visibility = View.VISIBLE
                 view.visibility = View.GONE
                 val quantityView = itemDetailLayout.getChildAt(1) as TextView
                 handleQuantityLayout(1.toByte(), itemDetailLayout, quantityView, product, true)
@@ -148,15 +148,15 @@ class ProductHomePageActivity : AppCompatActivity(), ProductAdapter.OnItemClickL
 
             "reduceQuantity" -> {
                 itemDetailLayout = view.parent as LinearLayout
-                quantity = itemDetailLayout!!.getChildAt(1) as TextView
-                quantityByte = (quantity.getText().toString() + "").toByte()
+                quantity = itemDetailLayout.getChildAt(1) as TextView
+                quantityByte = (quantity.text.toString() + "").toByte()
                 handleQuantityLayout(--quantityByte, itemDetailLayout, quantity, product, false)
             }
 
             "increaseQuantity" -> {
                 itemDetailLayout = view.parent as LinearLayout
-                quantity = itemDetailLayout!!.getChildAt(1) as TextView
-                quantityByte = (quantity.getText().toString() + "").toByte()
+                quantity = itemDetailLayout.getChildAt(1) as TextView
+                quantityByte = (quantity.text.toString() + "").toByte()
                 handleQuantityLayout(++quantityByte, itemDetailLayout, quantity, product, true)
             }
         }
@@ -244,18 +244,13 @@ class ProductHomePageActivity : AppCompatActivity(), ProductAdapter.OnItemClickL
         cancelTimers()
     }
 
-    override fun onResume() {
-        super.onResume()
-        //startTimers(5000, 5000);
-    }
-
     companion object {
         lateinit var handler: Handler
         var currentPage: Int? = 0
         private var scrollTimer: Timer? = null
         private var scrollTimerTask: TimerTask? = null
-        lateinit private var userId: String
-        lateinit private var updateRunnable: Runnable
+        private lateinit var userId: String
+        private lateinit var updateRunnable: Runnable
         fun autoSlideFlyers(adapter: RecyclerView.Adapter<*>, vPager: ViewPager2) {
             /*After setting the adapter use the timer */
             val totalPages = adapter.itemCount
@@ -304,7 +299,7 @@ class ProductHomePageActivity : AppCompatActivity(), ProductAdapter.OnItemClickL
             }
             scrollTimerTask = object : TimerTask() {
                 override fun run() {
-                    handler.post(updateRunnable!!)
+                    handler.post(updateRunnable)
                 }
             }
             scrollTimer!!.schedule(scrollTimerTask, delay, period)

@@ -64,12 +64,12 @@ class CardActivity : AppCompatActivity() {
             val result = validationResult()
             if (result) {
                 val cardMap = HashMap<String?, Any?>()
-                cardMap["holderName"] = holderName!!
-                cardMap["cardNumber"] = cardNumber!!
-                cardMap["expiryDate"] = expiryDate!!
+                cardMap["holderName"] = holderName
+                cardMap["cardNumber"] = cardNumber
+                cardMap["expiryDate"] = expiryDate
                 cardMap["vendor"] =
-                    (if (cardNumberLayout.getHint() == "Card Number") "" else cardNumberLayout.getHint())!!
-                cardMap["cvv"] = cvv!!
+                    (if (cardNumberLayout.hint == "Card Number") "" else cardNumberLayout.hint)!!
+                cardMap["cvv"] = cvv
                 Utils.addMapDataToRealTimeDataBase(cardMap, Utils.getUserCardPath(userId)) {
                     Toast.makeText(applicationContext, "Card details stored!", Toast.LENGTH_LONG)
                         .show()
@@ -100,10 +100,10 @@ class CardActivity : AppCompatActivity() {
             object : OnGetDataListener {
                 override fun onSuccess(dataMap: HashMap<String?, Any?>?) {
                     try {
-                        holderNameET!!.setText(dataMap!!["holderName"].toString())
-                        cardNumberET!!.setText(dataMap["cardNumber"].toString())
-                        expiryDateET!!.setText(dataMap["expiryDate"].toString())
-                        cvvET!!.setText(dataMap["cvv"].toString())
+                        holderNameET.setText(dataMap!!["holderName"].toString())
+                        cardNumberET.setText(dataMap["cardNumber"].toString())
+                        expiryDateET.setText(dataMap["expiryDate"].toString())
+                        cvvET.setText(dataMap["cvv"].toString())
                     } catch (e: Exception) {
                         Log.i(TAG, e.stackTrace.toString())
                     }
@@ -154,10 +154,10 @@ class CardActivity : AppCompatActivity() {
         for ((key, value) in vendorVsRegex) {
             regex = Pattern.compile(value)
             if (regex.matcher(cardNumber).matches()) {
-                cardNumberLayout!!.hint = key
+                cardNumberLayout.hint = key
                 return true
             } else {
-                cardNumberLayout!!.hint = "Card Number"
+                cardNumberLayout.hint = "Card Number"
             }
         }
         return false
@@ -192,8 +192,8 @@ class CardActivity : AppCompatActivity() {
     }
 
     companion object {
-        private val TAG = CheckoutActivity::class.java.getSimpleName()
-        lateinit private var regex: Pattern
+        private val TAG = CheckoutActivity::class.java.simpleName
+        private lateinit var regex: Pattern
         private val vendorVsRegex = HashMap<String?, String>()
         fun validateCVV(cvv: String?): Boolean {
             regex = Pattern.compile("^[0-9]{3}$")

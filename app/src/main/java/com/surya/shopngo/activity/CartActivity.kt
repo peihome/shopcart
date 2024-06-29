@@ -94,7 +94,7 @@ class CartActivity : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
                 quantity = quantityParentLayout.getChildAt(1) as TextView
                 detailsLayout = quantityParentLayout.parent as LinearLayout
                 subTotal = detailsLayout.getChildAt(2) as TextView
-                quantityByte = (quantity.getText().toString() + "").toByte()
+                quantityByte = (quantity.text.toString() + "").toByte()
                 handleQuantityLayout(--quantityByte, quantity, subTotal, product, position, false)
             }
 
@@ -103,7 +103,7 @@ class CartActivity : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
                 quantity = quantityParentLayout.getChildAt(1) as TextView
                 detailsLayout = quantityParentLayout.parent as LinearLayout
                 subTotal = detailsLayout.getChildAt(2) as TextView
-                quantityByte = (quantity.getText().toString() + "").toByte()
+                quantityByte = (quantity.text.toString() + "").toByte()
                 handleQuantityLayout(++quantityByte, quantity, subTotal, product, position, true)
             }
         }
@@ -283,8 +283,8 @@ class CartActivity : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
     }
 
     companion object {
-        private val TAG = Utils::class.java.getSimpleName()
-        lateinit private var userId: String
-        lateinit private var proceedButton: Button
+        private val TAG = Utils::class.java.simpleName
+        private lateinit var userId: String
+        private lateinit var proceedButton: Button
     }
 }

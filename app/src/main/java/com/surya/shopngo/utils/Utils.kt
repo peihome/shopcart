@@ -40,7 +40,7 @@ object Utils {
     const val beverages = products + "/beverages"
     const val flyers = appRoot + "/flyers"
     const val flyerImages = flyers + "/images"
-    private val TAG = Utils::class.java.getSimpleName()
+    private val TAG = Utils::class.java.simpleName
     var totalQuantity: Int = 0
     var taxFloat = 0f
     var discount = 0f

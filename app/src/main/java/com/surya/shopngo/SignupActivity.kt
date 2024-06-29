@@ -30,9 +30,9 @@ class SignupActivity : AppCompatActivity() {
         val registerBtn = findViewById<Button>(R.id.register)
         registerBtn.setOnClickListener { view: View? ->
             validateAndCreateUser(
-                email.getText().toString(),
-                password.getText().toString(),
-                repeatPassword.getText().toString()
+                email.text.toString(),
+                password.text.toString(),
+                repeatPassword.text.toString()
             )
         }
 

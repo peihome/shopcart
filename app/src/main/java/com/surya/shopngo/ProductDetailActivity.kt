@@ -98,7 +98,7 @@ class ProductDetailActivity : AppCompatActivity() {
             )
 
             "reduceQuantity" -> {
-                quantityByte = (quantity.getText().toString() + "").toByte()
+                quantityByte = (quantity.text.toString() + "").toByte()
                 handleQuantityLayout(
                     --quantityByte,
                     addButton,
@@ -110,7 +110,7 @@ class ProductDetailActivity : AppCompatActivity() {
             }
 
             "increaseQuantity" -> {
-                quantityByte = (quantity.getText().toString() + "").toByte()
+                quantityByte = (quantity.text.toString() + "").toByte()
                 handleQuantityLayout(
                     ++quantityByte,
                     addButton,

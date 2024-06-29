@@ -9,19 +9,19 @@ data class Product (
     var path: String?,
     var quantity: Byte = 0
 ) {
-    fun getImage(): String {
+    fun fetchId(): String {
+        return id
+    }
+    fun fetchImage(): String {
         return image
     }
-    fun getPrice(): Double {
+    fun fetchPrice(): Double {
         return price
     }
-    fun getTitle(): String {
+    fun fetchTitle(): String {
         return title
     }
-    fun getDescription(): String {
+    fun fetchDescription(): String {
         return description
-    }
-    fun getId(): String {
-        return id;
     }
 }

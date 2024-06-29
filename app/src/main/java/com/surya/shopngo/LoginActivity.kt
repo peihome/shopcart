@@ -37,7 +37,7 @@ class LoginActivity : AppCompatActivity() {
         val productPageIntent = Intent(this, ProductHomePageActivity::class.java)
         loginBtn.setOnClickListener { view: View? ->
             isValidEmailAndPassword(
-                email.getText().toString(), password.getText().toString()
+                email.text.toString(), password.text.toString()
             )
         }
 

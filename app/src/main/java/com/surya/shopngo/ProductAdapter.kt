@@ -29,7 +29,7 @@ class ProductAdapter(private val productList: ArrayList<Product>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product : Product = productList[position]
         val storageRef = storage.getReference()
-        val pathReference = storageRef.child(product.getImage())
+        val pathReference = storageRef.child(product.fetchImage())
         pathReference.getDownloadUrl()
             .addOnSuccessListener { uri: Uri? -> Picasso.get().load(uri).into(holder.image) }
             .addOnFailureListener { exception: Exception? ->
@@ -39,10 +39,10 @@ class ProductAdapter(private val productList: ArrayList<Product>) :
                     exception
                 )
             }
-        holder.title.text = product.getTitle()
-        holder.price.text = "$ " + product.getPrice() + " /lb"
-        holder.description.text = product.getDescription()
-        holder.quantity.tag = product.getId()
+        holder.title.text = product.fetchTitle()
+        holder.price.text = "$ " + product.fetchPrice() + " /lb"
+        holder.description.text = product.fetchDescription()
+        holder.quantity.tag = product.fetchId()
     }
 
     override fun getItemCount(): Int {

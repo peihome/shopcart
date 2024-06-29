@@ -22,7 +22,7 @@ class FlyerAdapter(private val flyersList: ArrayList<Flyer>) :
     override fun onBindViewHolder(holder: ViewPagerHolder, position: Int) {
         val flyer: Flyer = flyersList[position]
         val storageRef = storage.getReference()
-        val pathReference = storageRef.child(flyer.getImage())
+        val pathReference = storageRef.child(flyer.fetchImage())
         pathReference.getDownloadUrl()
             .addOnSuccessListener { uri: Uri? -> Picasso.get().load(uri).into(holder.image) }
             .addOnFailureListener { exception: Exception? ->

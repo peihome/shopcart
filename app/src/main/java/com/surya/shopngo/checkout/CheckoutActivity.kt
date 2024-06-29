@@ -22,7 +22,7 @@ import java.util.Locale
 import java.util.regex.Pattern
 
 class CheckoutActivity : AppCompatActivity() {
-    lateinit private var userId: String
+    private lateinit var userId: String
     lateinit var proviceTextView: MaterialAutoCompleteTextView
     lateinit var continueButton: Button
     lateinit var firstNameET: TextInputEditText
@@ -66,7 +66,7 @@ class CheckoutActivity : AppCompatActivity() {
             city = cityET.getText().toString().trim { it <= ' ' }
             zipcode =
                 zipcodeET.getText().toString().trim { it <= ' ' }.uppercase(Locale.getDefault())
-            province = proviceTextView.getText().toString().trim { it <= ' ' }
+            province = proviceTextView.text.toString().trim { it <= ' ' }
             val result = validationResult(
                 firstName,
                 lastName,
@@ -171,13 +171,13 @@ class CheckoutActivity : AppCompatActivity() {
             object : OnGetDataListener {
                 override fun onSuccess(dataMap: HashMap<String?, Any?>?) {
                     try {
-                        firstNameET!!.setText(dataMap!!["firstName"].toString())
-                        lastNameET!!.setText(dataMap["lastName"].toString())
-                        streetAddressET!!.setText(dataMap["streetAddress"].toString())
-                        floorNumberET!!.setText(dataMap["floorNumber"].toString())
-                        cityET!!.setText(dataMap["city"].toString())
-                        proviceTextView!!.setText(dataMap["province"].toString())
-                        zipcodeET!!.setText(dataMap["zipcode"].toString())
+                        firstNameET.setText(dataMap!!["firstName"].toString())
+                        lastNameET.setText(dataMap["lastName"].toString())
+                        streetAddressET.setText(dataMap["streetAddress"].toString())
+                        floorNumberET.setText(dataMap["floorNumber"].toString())
+                        cityET.setText(dataMap["city"].toString())
+                        proviceTextView.setText(dataMap["province"].toString())
+                        zipcodeET.setText(dataMap["zipcode"].toString())
                     } catch (e: Exception) {
                         Log.i(TAG, e.stackTrace.toString())
                     }
@@ -190,7 +190,7 @@ class CheckoutActivity : AppCompatActivity() {
     }
 
     companion object {
-        private val TAG = CheckoutActivity::class.java.getSimpleName()
+        private val TAG = CheckoutActivity::class.java.simpleName
         private var firstName: String? = null
         private var lastName: String? = null
         private var streetAddress: String? = null
@@ -200,7 +200,7 @@ class CheckoutActivity : AppCompatActivity() {
         private var province: String? = null
         private const val validationResult = false
         private var pattern: String? = null
-        lateinit private var regex: Pattern
+        private lateinit var regex: Pattern
         fun validateName(name: String?): Boolean {
             val pattern = "^[A-Za-z]{3,50}$"
             val regex = Pattern.compile(pattern)
@@ -242,9 +242,7 @@ class CheckoutActivity : AppCompatActivity() {
         }
 
         fun validateProvince(province: String?): Boolean {
-            return if (!province!!.isEmpty()) {
-                true
-            } else false
+            return !province!!.isEmpty()
         }
     }
 }

@@ -25,7 +25,7 @@ class ConfirmOrderActivity : AppCompatActivity(), CartItemAdapter.OnItemClickLis
     lateinit var userId: String
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: CartItemAdapter
-    lateinit private var cartItemsList: ArrayList<Product>
+    private lateinit var cartItemsList: ArrayList<Product>
     lateinit var nameTV: TextView
     lateinit var streetAddressTV: TextView
     lateinit var addressLine2TV: TextView
@@ -100,10 +100,10 @@ class ConfirmOrderActivity : AppCompatActivity(), CartItemAdapter.OnItemClickLis
             Utils.getUserAddressPath(userId),
             object : OnGetDataListener {
                 override fun onSuccess(dataMap: HashMap<String?, Any?>?) {
-                    nameTV!!.text = dataMap!!["firstName"].toString() + " " + dataMap["lastName"]
-                    streetAddressTV!!.text =
+                    nameTV.text = dataMap!!["firstName"].toString() + " " + dataMap["lastName"]
+                    streetAddressTV.text =
                         dataMap["streetAddress"].toString() + " F.No " + dataMap["floorNumber"]
-                    addressLine2TV!!.text =
+                    addressLine2TV.text =
                         dataMap["city"].toString() + ", " + dataMap["province"] + ", " + dataMap["zipcode"]
                 }
 
@@ -121,14 +121,14 @@ class ConfirmOrderActivity : AppCompatActivity(), CartItemAdapter.OnItemClickLis
             Utils.getUserCardPath(userId),
             object : OnGetDataListener {
                 override fun onSuccess(dataMap: HashMap<String?, Any?>?) {
-                    holderNameTV!!.text = dataMap!!["holderName"].toString() + ""
-                    vendorTV!!.text = dataMap["vendor"].toString() + ""
+                    holderNameTV.text = dataMap!!["holderName"].toString() + ""
+                    vendorTV.text = dataMap["vendor"].toString() + ""
                     if ((dataMap["vendor"].toString() + "").isEmpty()) {
-                        vendorTV!!.visibility = View.GONE
+                        vendorTV.visibility = View.GONE
                     } else {
-                        vendorTV!!.visibility = View.VISIBLE
+                        vendorTV.visibility = View.VISIBLE
                     }
-                    cardNumberTV!!.text = Utils.getMaskedCardNumberForDisplay(
+                    cardNumberTV.text = Utils.getMaskedCardNumberForDisplay(
                         dataMap["cardNumber"].toString() + ""
                     )
                 }
@@ -180,7 +180,7 @@ class ConfirmOrderActivity : AppCompatActivity(), CartItemAdapter.OnItemClickLis
                                     if (quantity <= 0) {
                                         continue
                                     }
-                                    cartItemsList!!.add(
+                                    cartItemsList.add(
                                         Product(
                                             document.id,
                                             data["image"].toString() + "",
@@ -192,7 +192,7 @@ class ConfirmOrderActivity : AppCompatActivity(), CartItemAdapter.OnItemClickLis
                                         )
                                     )
                                 }
-                                if (cartItemsList!!.size != products.size) {
+                                if (cartItemsList.size != products.size) {
                                     //Veggies
                                     Utils.getFireStoreDataByIds(Utils.veggies, products) { task ->
                                         if (task.isSuccessful) {
@@ -204,7 +204,7 @@ class ConfirmOrderActivity : AppCompatActivity(), CartItemAdapter.OnItemClickLis
                                                 if (quantity <= 0) {
                                                     continue
                                                 }
-                                                cartItemsList!!.add(
+                                                cartItemsList.add(
                                                     Product(
                                                         document.id,
                                                         data["image"].toString() + "",
@@ -216,7 +216,7 @@ class ConfirmOrderActivity : AppCompatActivity(), CartItemAdapter.OnItemClickLis
                                                     )
                                                 )
                                             }
-                                            if (cartItemsList!!.size != products.size) {
+                                            if (cartItemsList.size != products.size) {
 
                                                 //Veggies
                                                 Utils.getFireStoreDataByIds(
@@ -232,7 +232,7 @@ class ConfirmOrderActivity : AppCompatActivity(), CartItemAdapter.OnItemClickLis
                                                             if (quantity <= 0) {
                                                                 continue
                                                             }
-                                                            cartItemsList!!.add(
+                                                            cartItemsList.add(
                                                                 Product(
                                                                     document.id,
                                                                     data["image"].toString() + "",
@@ -282,7 +282,7 @@ class ConfirmOrderActivity : AppCompatActivity(), CartItemAdapter.OnItemClickLis
         //ViewPager2 Flyer
         recyclerView = findViewById(R.id.rvCartPage)
         adapter = CartItemAdapter(cartItemsList, false)
-        adapter!!.setOnItemClickListener(this as CartItemAdapter.OnItemClickListener)
+        adapter.setOnItemClickListener(this as CartItemAdapter.OnItemClickListener)
         recyclerView.setAdapter(adapter)
         recyclerView.setLayoutManager(
             LinearLayoutManager(
@@ -295,7 +295,7 @@ class ConfirmOrderActivity : AppCompatActivity(), CartItemAdapter.OnItemClickLis
     }
 
     override fun onItemClick(view: View?, position: Int, type: String?) {
-        val product = cartItemsList!![position]
+        val product = cartItemsList[position]
         when (type) {
             "image" -> {
                 val productDetail = Intent(this, ProductDetailActivity::class.java)
