@@ -30,7 +30,7 @@ import javax.mail.internet.AddressException
 import javax.mail.internet.InternetAddress
 
 object Utils {
-    private const val appRoot = "shopCart"
+    private const val appRoot = "shopNGo"
     const val province = appRoot + "/province"
     const val vendorVsRegex = appRoot + "/vendorVsRegex"
     private const val products = appRoot + "/products"

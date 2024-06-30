@@ -29,6 +29,11 @@ class ProductHomePageActivity : AppCompatActivity(), ProductAdapter.OnItemClickL
     lateinit var adapter: RecyclerView.Adapter<*>
     lateinit var productList: ArrayList<Product>
     lateinit var flyersList: ArrayList<Flyer>
+
+    init {
+        flyersList = ArrayList<Flyer>()
+    }
+
     fun openCartPage(item: MenuItem) {
         Utils.handleMenuCLick(this, item)
     }
