@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "463710974181",
+    "project_number": "120101632110",
     "project_id": "shopngo-101",
     "storage_bucket": "shopngo-101.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:463710974181:android:724956f2c8014e1bef240c",
+        "mobilesdk_app_id": "1:120101632110:android:12b64fc00f3397f3d6ce7f",
         "android_client_info": {
           "package_name": "com.surya.shopngo"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCsHjlyvWTM4JY9gn-9kkOfsV-EiUg15PE"
+          "current_key": "AIzaSyB8Tt_QnMxLu1JZMCFHOhNRWKcxfIkeRIE"
         }
       ],
       "services": {

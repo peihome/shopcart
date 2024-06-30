@@ -9,9 +9,9 @@
               <option name="connection">
                 <ConnectionSetting>
                   <option name="appId" value="com.surya.shopngo" />
-                  <option name="mobileSdkAppId" value="1:463710974181:android:724956f2c8014e1bef240c" />
+                  <option name="mobileSdkAppId" value="1:120101632110:android:12b64fc00f3397f3d6ce7f" />
                   <option name="projectId" value="shopngo-101" />
-                  <option name="projectNumber" value="463710974181" />
+                  <option name="projectNumber" value="120101632110" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
