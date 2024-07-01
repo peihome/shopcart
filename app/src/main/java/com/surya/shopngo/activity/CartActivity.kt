@@ -1,5 +1,6 @@
 package com.surya.shopngo.activity
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -28,6 +29,8 @@ class CartActivity : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
     var adapter: CartItemAdapter? = null
     private var cartItemsList: ArrayList<Product>? = null
     var grandsubtotalTV: TextView? = null
+    private lateinit var progressDialog: ProgressDialog
+
     fun openCartPage(item: MenuItem) {
         Utils.handleMenuCLick(this, item)
     }
@@ -49,6 +52,10 @@ class CartActivity : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
             val confirmOrderActivity = Intent(this, ConfirmOrderActivity::class.java)
             startActivity(confirmOrderActivity)
         })
+
+        progressDialog = ProgressDialog(this).apply {
+            setMessage("Loading Cart...")
+        }
         handleCartItemsForView()
     }
 
@@ -157,10 +164,12 @@ class CartActivity : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
     }
 
     fun handleCartItemsForView() {
+        progressDialog.show()
         Utils.getMapDataFromRealTimeDataBase(
             Utils.getUserCartItemsPath(userId),
             object : OnGetDataListener {
                 override fun onSuccess(dataMap: HashMap<String?, Any?>?) {
+                    progressDialog.dismiss()
                     val products = ArrayList<String?>()
                     if (dataMap != null && !dataMap.isEmpty()) {
                         for ((key) in dataMap) {
@@ -275,6 +284,7 @@ class CartActivity : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
                 }
 
                 override fun onFailure(e: Exception?) {
+                    progressDialog.dismiss()
                     val emptyCartIntent = Intent(applicationContext, EmptyCartActivity::class.java)
                     startActivity(emptyCartIntent)
                     finish()

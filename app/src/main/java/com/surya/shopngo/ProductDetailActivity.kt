@@ -1,5 +1,6 @@
 package com.surya.shopngo
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -15,6 +16,7 @@ import com.surya.shopngo.interfaces.OnGetDataListener
 import com.surya.shopngo.utils.Utils
 
 class ProductDetailActivity : AppCompatActivity() {
+
     fun openCartPage(item: MenuItem) {
         Utils.handleMenuCLick(this, item)
     }

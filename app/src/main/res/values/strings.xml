@@ -18,4 +18,5 @@
     <string name="user.purchase.thankyou">Order placed successfully! Thank you for shopping with us.</string>
     <string name="user.cart.empty">Your shopping cart is empty.</string>
     <string name="user.cart.empty.button.redirect">RETURN TO HOME PAGE</string>
+    <string name="web.client.id">120101632110-qlrp68o288r5k0pv32h36tm4qmjfv2nl.apps.googleusercontent.com</string>
 </resources>
