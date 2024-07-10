@@ -15,12 +15,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
-import com.surya.shopngo.Product
-import com.surya.shopngo.ProductDetailActivity
+import com.surya.shopngo.dataclass.Product
 import com.surya.shopngo.R
 import com.surya.shopngo.adapter.CartItemAdapter
-import com.surya.shopngo.cart.EmptyCartActivity
-import com.surya.shopngo.confirmorder.ConfirmOrderActivity
 import com.surya.shopngo.interfaces.OnGetDataListener
 import com.surya.shopngo.utils.Utils
 

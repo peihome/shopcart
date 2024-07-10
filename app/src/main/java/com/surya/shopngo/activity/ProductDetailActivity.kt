@@ -1,6 +1,5 @@
-package com.surya.shopngo
+package com.surya.shopngo.activity
 
-import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -12,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.google.firebase.auth.FirebaseAuth
+import com.surya.shopngo.R
 import com.surya.shopngo.interfaces.OnGetDataListener
 import com.surya.shopngo.utils.Utils
 

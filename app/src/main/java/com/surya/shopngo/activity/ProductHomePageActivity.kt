@@ -1,4 +1,4 @@
-package com.surya.shopngo
+package com.surya.shopngo.activity
 
 import android.content.Context
 import android.content.Intent
@@ -18,7 +18,13 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.firebase.auth.FirebaseAuth
+import com.surya.shopngo.R
+import com.surya.shopngo.dataclass.Flyer
+import com.surya.shopngo.adapter.FlyerAdapter
+import com.surya.shopngo.adapter.ProductAdapter
+import com.surya.shopngo.dataclass.Product
 import com.surya.shopngo.interfaces.OnGetDataListener
+import com.surya.shopngo.utils.Email
 import com.surya.shopngo.utils.Utils
 import java.util.Timer
 import java.util.TimerTask
@@ -48,12 +54,15 @@ class ProductHomePageActivity : AppCompatActivity(), ProductAdapter.OnItemClickL
         super.onCreate(savedInstanceState)
         setContentView(R.layout.product_list_horizontal)
 
-
         // Home navigation icon
         Utils.addHomeIconNavigation(this, findViewById(R.id.topAppBar))
         handleFLyers()
         handleProducts()
         val mAuth = FirebaseAuth.getInstance()
+
+        //
+        //mAuth.currentUser?.email?.let { it1 -> Email.sendEmail(it1) }
+
         val currentUser = mAuth.currentUser
         if (currentUser != null) {
             userId = currentUser.uid

@@ -20,10 +20,10 @@ import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
-import com.surya.shopngo.ProductHomePageActivity
+import com.surya.shopngo.activity.ProductHomePageActivity
 import com.surya.shopngo.R
 import com.surya.shopngo.activity.CartActivity
-import com.surya.shopngo.cart.EmptyCartActivity
+import com.surya.shopngo.activity.EmptyCartActivity
 import com.surya.shopngo.interfaces.OnGetDataListener
 import java.util.regex.Pattern
 import javax.mail.internet.AddressException

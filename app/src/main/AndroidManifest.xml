@@ -9,44 +9,41 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/shop_n_go"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/shop_n_go"
         android:supportsRtl="true"
         android:theme="@style/Theme.ShopNGo"
         tools:targetApi="31">
         <activity
-            android:name=".cart.EmptyCartActivity"
+            android:name=".activity.EmptyCartActivity"
             android:exported="false" />
         <activity
-            android:name=".thankyou.ThankyouActivity"
+            android:name=".activity.ThankyouActivity"
             android:exported="false" />
         <activity
-            android:name=".confirmorder.ConfirmOrderActivity"
+            android:name=".activity.ConfirmOrderActivity"
             android:exported="false" />
         <activity
-            android:name=".cardpage.CardActivity"
+            android:name=".activity.CardActivity"
             android:exported="false" />
         <activity
-            android:name=".checkout.CheckoutActivity"
+            android:name=".activity.CheckoutActivity"
             android:exported="false" />
         <activity
             android:name=".activity.CartActivity"
             android:exported="false" />
         <activity
-            android:name=".ProductHomePageActivity"
+            android:name=".activity.ProductHomePageActivity"
             android:exported="false" />
         <activity
-            android:name=".OTPActivity"
+            android:name=".activity.SignupActivity"
             android:exported="false" />
         <activity
-            android:name=".SignupActivity"
+            android:name=".activity.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ProductDetailActivity"
+            android:name=".activity.ProductDetailActivity"
             android:exported="false" />
 
         <meta-data
@@ -54,11 +51,10 @@
             android:resource="@drawable/rounded_corners" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

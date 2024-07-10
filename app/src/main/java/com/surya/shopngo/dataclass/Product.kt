@@ -1,4 +1,4 @@
-package com.surya.shopngo
+package com.surya.shopngo.dataclass
 
 data class Product (
     var id: String,

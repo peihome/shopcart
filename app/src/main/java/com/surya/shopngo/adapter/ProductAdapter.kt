@@ -1,4 +1,4 @@
-package com.surya.shopngo
+package com.surya.shopngo.adapter
 
 import android.net.Uri
 import android.util.Log
@@ -11,6 +11,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
+import com.surya.shopngo.R
+import com.surya.shopngo.dataclass.Product
 
 class ProductAdapter(private val productList: ArrayList<Product>) :
     RecyclerView.Adapter<ProductAdapter.ViewHolder>() {

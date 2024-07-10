@@ -1,5 +1,6 @@
-package com.surya.shopngo.checkout
+package com.surya.shopngo.activity
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -13,9 +14,7 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
-import com.surya.shopngo.ProductHomePageActivity
 import com.surya.shopngo.R
-import com.surya.shopngo.confirmorder.ConfirmOrderActivity
 import com.surya.shopngo.interfaces.OnGetDataListener
 import com.surya.shopngo.utils.Utils
 import java.util.Locale
@@ -32,6 +31,8 @@ class CheckoutActivity : AppCompatActivity() {
     lateinit var cityET: TextInputEditText
     lateinit var zipcodeET: TextInputEditText
     lateinit var cancelButton: Button
+    private lateinit var progressDialog: ProgressDialog
+
     fun openCartPage(item: MenuItem) {
         Utils.handleMenuCLick(this, item)
     }
@@ -39,6 +40,10 @@ class CheckoutActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.checkout_form)
+
+        progressDialog = ProgressDialog(this).apply {
+            setMessage("Loading...")
+        }
 
         // Home navigation icon
         Utils.addHomeIconNavigation(this, findViewById(R.id.topAppBar))
@@ -166,6 +171,10 @@ class CheckoutActivity : AppCompatActivity() {
     }
 
     fun prefillFormIfDataExists() {
+        progressDialog = ProgressDialog(this).apply {
+            setMessage("Loading...")
+        }
+
         Utils.getMapDataFromRealTimeDataBase(
             Utils.getUserAddressPath(userId),
             object : OnGetDataListener {
@@ -181,10 +190,12 @@ class CheckoutActivity : AppCompatActivity() {
                     } catch (e: Exception) {
                         Log.i(TAG, e.stackTrace.toString())
                     }
+                    progressDialog.dismiss()
                 }
 
                 override fun onFailure(e: Exception?) {
                     Log.i(TAG, e!!.stackTrace.toString())
+                    progressDialog.dismiss()
                 }
             })
     }

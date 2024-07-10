@@ -1,5 +1,6 @@
-package com.surya.shopngo.confirmorder
+package com.surya.shopngo.activity
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -11,14 +12,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
-import com.surya.shopngo.Product
-import com.surya.shopngo.ProductDetailActivity
 import com.surya.shopngo.R
 import com.surya.shopngo.adapter.CartItemAdapter
-import com.surya.shopngo.cardpage.CardActivity
-import com.surya.shopngo.checkout.CheckoutActivity
+import com.surya.shopngo.dataclass.Product
 import com.surya.shopngo.interfaces.OnGetDataListener
-import com.surya.shopngo.thankyou.ThankyouActivity
+import com.surya.shopngo.utils.Email
 import com.surya.shopngo.utils.Utils
 
 class ConfirmOrderActivity : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
@@ -39,6 +37,9 @@ class ConfirmOrderActivity : AppCompatActivity(), CartItemAdapter.OnItemClickLis
     lateinit var changeCard: Button
     lateinit var changeAddress: Button
     lateinit var buyButton: Button
+    private lateinit var progressDialog: ProgressDialog
+    lateinit var mAuth: FirebaseAuth;
+
     fun openCartPage(item: MenuItem) {
         Utils.handleMenuCLick(this, item)
     }
@@ -47,9 +48,13 @@ class ConfirmOrderActivity : AppCompatActivity(), CartItemAdapter.OnItemClickLis
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_confirm_order)
 
+        progressDialog = ProgressDialog(this).apply {
+            setMessage("Loading...")
+        }
+
         // Home navigation icon
         Utils.addHomeIconNavigation(this, findViewById(R.id.topAppBar))
-        val mAuth = FirebaseAuth.getInstance()
+        mAuth = FirebaseAuth.getInstance()
         val currentUser = mAuth.currentUser
         if (currentUser != null) {
             userId = currentUser.uid
@@ -90,12 +95,16 @@ class ConfirmOrderActivity : AppCompatActivity(), CartItemAdapter.OnItemClickLis
             ) {
                 val thakyouActivity = Intent(applicationContext, ThankyouActivity::class.java)
                 startActivity(thakyouActivity)
+
+                //Send confirmation email to user
+                //mAuth.currentUser?.email?.let { it1 -> Email.sendEmail(it1) }
                 finish()
             }
         })
     }
 
     fun populateAddressFields() {
+        progressDialog.show()
         Utils.getMapDataFromRealTimeDataBase(
             Utils.getUserAddressPath(userId),
             object : OnGetDataListener {
@@ -105,12 +114,16 @@ class ConfirmOrderActivity : AppCompatActivity(), CartItemAdapter.OnItemClickLis
                         dataMap["streetAddress"].toString() + " F.No " + dataMap["floorNumber"]
                     addressLine2TV.text =
                         dataMap["city"].toString() + ", " + dataMap["province"] + ", " + dataMap["zipcode"]
+
+                    progressDialog.dismiss()
                 }
 
                 override fun onFailure(e: Exception?) {
 //                Toast.makeText(getApplicationContext(), "Please enter your shipping details!", Toast.LENGTH_SHORT).show();
                     val cardIntent = Intent(applicationContext, CheckoutActivity::class.java)
                     startActivity(cardIntent)
+
+                    progressDialog.dismiss()
                     finish()
                 }
             })

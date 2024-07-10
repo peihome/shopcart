@@ -1,4 +1,4 @@
-package com.surya.shopngo
+package com.surya.shopngo.activity
 
 import android.net.Uri
 import android.util.Log
@@ -9,6 +9,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
+import com.surya.shopngo.R
 
 class ProductDetailImageAdapter(private val productImages: ArrayList<String?>) :
     RecyclerView.Adapter<ProductDetailImageAdapter.ViewHolder>() {

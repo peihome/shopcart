@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
-import com.surya.shopngo.Product
+import com.surya.shopngo.dataclass.Product
 import com.surya.shopngo.R
 import com.surya.shopngo.utils.Utils
 

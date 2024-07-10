@@ -1,4 +1,4 @@
-package com.surya.shopngo.thankyou
+package com.surya.shopngo.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.surya.shopngo.ProductHomePageActivity
 import com.surya.shopngo.R
 import com.surya.shopngo.utils.Utils
 

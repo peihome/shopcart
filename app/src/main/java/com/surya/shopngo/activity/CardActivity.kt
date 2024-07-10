@@ -1,4 +1,4 @@
-package com.surya.shopngo.cardpage
+package com.surya.shopngo.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,10 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
-import com.surya.shopngo.ProductHomePageActivity
 import com.surya.shopngo.R
-import com.surya.shopngo.checkout.CheckoutActivity
-import com.surya.shopngo.confirmorder.ConfirmOrderActivity
 import com.surya.shopngo.interfaces.OnGetDataListener
 import com.surya.shopngo.utils.Utils
 import java.util.Calendar

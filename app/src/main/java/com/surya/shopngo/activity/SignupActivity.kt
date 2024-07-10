@@ -1,4 +1,4 @@
-package com.surya.shopngo
+package com.surya.shopngo.activity
 
 import android.app.Activity
 import android.content.Context
@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.surya.shopngo.R
 import com.surya.shopngo.utils.Utils
 
 class SignupActivity : AppCompatActivity() {

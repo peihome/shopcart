@@ -1,4 +1,4 @@
-package com.surya.shopngo
+package com.surya.shopngo.adapter
 
 import android.net.Uri
 import android.util.Log
@@ -9,7 +9,9 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
-import com.surya.shopngo.FlyerAdapter.ViewPagerHolder
+import com.surya.shopngo.dataclass.Flyer
+import com.surya.shopngo.R
+import com.surya.shopngo.adapter.FlyerAdapter.ViewPagerHolder
 
 class FlyerAdapter(private val flyersList: ArrayList<Flyer>) :
     RecyclerView.Adapter<ViewPagerHolder>() {
