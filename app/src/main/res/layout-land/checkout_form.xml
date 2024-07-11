@@ -47,7 +47,7 @@
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_gravity="center"
-            android:layout_width="300dp"
+            android:layout_width="500dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="22dp"
             android:layout_marginRight="22dp"
@@ -57,7 +57,7 @@
                 android:id="@+id/textView"
                 android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="40dp"
                 android:text="Shipping address"
                 android:textSize="30sp"
                 android:textStyle="bold" />
@@ -84,7 +84,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/firstName"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="48dp"
                             android:hint="First Name"
                             android:inputType="text"
                             android:maxLength="30" />
@@ -106,7 +106,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/lastName"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="48dp"
                             android:hint="Last Name"
                             android:inputType="text"
                             android:maxLength="20" />
@@ -124,7 +124,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/streetAddress"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:hint="Street Address" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -138,7 +138,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/floorNumber"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:hint="Floor # (optional)"
                     android:inputType="number"
                     />
@@ -154,7 +154,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/city"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:hint="City" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -178,16 +178,17 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+
                         android:hint="Province"
                         android:background="@color/white"
                         >
+
                         <com.google.android.material.textfield.MaterialAutoCompleteTextView
                             android:id="@+id/proviceTextView"
-                            android:dropDownHeight="350dp"
-                            android:inputType="none"
-                            android:layout_height="match_parent"
                             android:layout_width="match_parent"
-                            />
+                            android:layout_height="48dp"
+                            android:dropDownHeight="350dp"
+                            android:inputType="none" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
@@ -195,6 +196,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+
                     android:orientation="vertical">
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -205,7 +207,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/zipcode"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="48dp"
                             android:hint="Zip Code"
                             android:inputType="text"
                             android:maxLength="7" />
@@ -215,23 +217,26 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/continueButton"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:text="Continue" />
+                android:layout_marginTop="45dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/cancelButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:backgroundTint="#E9E9EB"
-                android:text="Cancel"
-                android:textColor="@color/black" />
+                <Button
+                    android:id="@+id/continueButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:text="Continue" />
+
+                <Button
+                    android:id="@+id/cancelButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cancel" />
+            </LinearLayout>
 
 
         </LinearLayout>
