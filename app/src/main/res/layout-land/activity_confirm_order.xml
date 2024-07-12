@@ -266,46 +266,95 @@
                     android:paddingRight="50dp"/>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <TextView
                 android:layout_gravity="center"
+                android:layout_width="300dp"
+                android:layout_height="match_parent"
+                android:textColor="#74696A"
+                android:textSize="18sp"
+                android:letterSpacing="0.2"
+                android:textStyle="bold"
+                android:text="CARD DETAILS :"
+                android:layout_marginTop="20dp"
+                android:paddingLeft="10dp"
+                >
+
+            </TextView>
+
+            <LinearLayout
+                android:layout_gravity="center"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:layout_margin="10dp"
+                android:padding="10dp"
+                android:orientation="vertical"
                 android:gravity="center"
-                android:orientation="horizontal">
+                >
 
-                <Button
-                    android:id="@+id/cancelOrder"
-                    android:layout_width="150dp"
+                <TextView
+                    android:id="@+id/holderName"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/border_filled_metal_grey"
+                    android:textSize="19sp"
+                    android:textStyle="bold"
+                    android:text="Name"
                     android:gravity="center"
-                    android:letterSpacing="0.2"
-                    android:paddingRight="50dp"
-                    android:text="CANCEL"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:paddingBottom="5dp"
+                    >
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/vendor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="address"
+                    android:textSize="19sp"
+                    android:paddingBottom="5dp"
+                    android:gravity="center"
+                    />
+
+                <TextView
+                    android:id="@+id/cardNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="addressLine2"
+                    android:textSize="19sp"
+                    android:paddingBottom="5dp"
+                    android:gravity="center"
+                    />
 
                 <Button
-                    android:id="@+id/confirmOrder"
+                    android:id="@+id/changeCard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_marginTop="20dp"
-
+                    android:background="@drawable/border_filled_metal_grey"
+                    android:drawableLeft="@android:drawable/ic_menu_edit"
                     android:gravity="center"
                     android:letterSpacing="0.2"
-                    android:paddingRight="50dp"
-                    android:text="CONFIRM"
+                    android:text="CHANGE CARD"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:paddingRight="50dp"
+                    android:layout_marginTop="20dp"
+                    />
             </LinearLayout>
 
+            <Button
+                android:id="@+id/buyButton"
+                android:layout_width="300dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="center"
+                android:text="Place Order"
+                android:textSize="17dp"
+                />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
